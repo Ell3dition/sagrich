@@ -6,7 +6,8 @@ export {
   vercontraseña,
   exportTableToExcel,
   animacionBtn,
-  removerAnimacionBtn
+  removerAnimacionBtn,
+  crearSmartWizard
 };
 
 //FORMATEAR FECHA
@@ -53,57 +54,61 @@ function LimpiarDataTable(idTabla) {
 }
 
 //CREAR DATATABLE
-function crearDATATABLE(idTabla, title, filename, page = 20) {
-$('#' + idTabla).DataTable({
-    pageLength : page,
+function crearDATATABLE(idTabla, title = null, filename, page = 20, footer = false) {
+  $("#" + idTabla).DataTable({
+    pageLength: page,
     language: {
-      decimal: '',
-      emptyTable: 'No hay información',
-      info: 'Mostrando _START_ a _END_ de _TOTAL_ Entradas',
-      infoEmpty: 'Mostrando 0 de 0 Entradas',
-      infoFiltered: '(Filtrado de _MAX_ total entradas)',
-      infoPostFix: '',
-      thousands: ',',
-      lengthMenu: 'Mostrar _MENU_ Entradas',
-      loadingRecords: 'Cargando...',
-      processing: 'Procesando...',
-      search: 'Buscar:',
-      zeroRecords: 'Sin resultados encontrados',
+      decimal: "",
+      emptyTable: "No hay información",
+      info: "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+      infoEmpty: "Mostrando 0 de 0 Entradas",
+      infoFiltered: "(Filtrado de _MAX_ total entradas)",
+      infoPostFix: "",
+      thousands: ",",
+      lengthMenu: "Mostrar _MENU_ Entradas",
+      loadingRecords: "Cargando...",
+      processing: "Procesando...",
+      search: "Buscar:",
+      zeroRecords: "Sin resultados encontrados",
       paginate: {
-        first: 'Primero',
-        last: 'Ultimo',
-        next: 'Siguiente',
-        previous: 'Anterior',
+        first: "Primero",
+        last: "Ultimo",
+        next: "Siguiente",
+        previous: "Anterior",
       },
     },
 
-    dom: 'Bfrtip',
-    
+    dom: "Bfrtip",
+
     buttons: {
       dom: {
         button: {
-          className: 'btn',
+          className: "btn",
         },
       },
-   
+
       buttons: [
         {
-          extend: 'excelHtml5',
-          footer: true,
-          title: null,
+          exportOptions: {
+            columns: ":not(.no-exportar)",
+          },
+          extend: "excelHtml5",
+          footer: footer,
+          title: title,
           filename: filename,
+          sheetName: "Reporte",
           //definimos estilos del boton de excel
-          extend: 'excel',
-          text: 'Exportar a Excel',
-          className: 'btn btn-warning',
+          extend: "excel",
+          text: "Exportar a Excel",
+          className: "btn btn-warning", 
 
           excelStyles: [
             {
-              template: ['blue_medium', 'header_green', 'title_medium'],
+              template: ["blue_medium", "header_green", "title_medium"],
             },
 
             {
-              cells: 'sh',
+              cells: "sh",
               style: {
                 font: {
                   size: 14,
@@ -111,7 +116,7 @@ $('#' + idTabla).DataTable({
                 },
                 fill: {
                   pattern: {
-                    color: '1C3144',
+                    color: "1C3144",
                   },
                 },
               },
@@ -120,12 +125,7 @@ $('#' + idTabla).DataTable({
         },
       ],
     },
-
-    
   });
-
-
-  
 }
 
 
@@ -176,3 +176,33 @@ function removerAnimacionBtn(btn, texto){
 }
 
 
+function crearSmartWizard(idWizard) {
+  $("#" + idWizard).smartWizard({
+    selected: 0,
+    theme: "progress",
+    enableURLhash: false,
+    autoAdjustHeight: false,
+    removeDoneStepOnNavigateBack: true,
+    lang: {
+      // Language variables for button
+      next: "Siguiente",
+      previous: "Anterior",
+    },
+    transition: {
+      animation: "none", // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
+      speed: "400", // Transion animation speed
+      easing: "", // Transition animation easing. Not supported without a jQuery easing plugin
+    },
+    toolbarSettings: {
+      toolbarPosition: "none", // none, top, bottom, both
+    },
+    anchorSettings: {
+      anchorClickable: true, // Enable/Disable anchor navigation
+      enableAllAnchors: false, // Activates all anchors clickable all times
+      markDoneStep: true, // Add done state on navigation
+      markAllPreviousStepsAsDone: true, // When a step selected by url hash, all previous steps are marked done
+      removeDoneStepOnNavigateBack: true, // While navigate back done step after active step will be cleared
+      enableAnchorOnDoneStep: true, // Enable/Disable the done steps navigation
+    },
+  });
+}

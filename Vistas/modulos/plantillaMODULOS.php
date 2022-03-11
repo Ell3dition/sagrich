@@ -1,10 +1,15 @@
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
-    <h1>
-      TITULO AQUI
-    </h1>
-
+  <div class="container">
+       <div class="row">
+           <div class="col-md-5">
+                <h3>
+                    Titulo aqui
+                </h3>
+           </div>
+       </div>
+   </div>
   </section>
 
   <!-- Main content -->

@@ -30,6 +30,12 @@
           </ul>
         </li>
 
+        <li class="nav-item">
+          <a href="trabajadores" class="nav-link">
+            <i class="nav-icon  fas fa-users"></i>
+            <p>Trabajadores</p>
+          </a>
+        </li>
 
         <li class="nav-item">
           <a href="usuarios" class="nav-link">

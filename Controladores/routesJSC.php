@@ -7,10 +7,12 @@ class RoutesJSC
 {
     function routesAdministrador($url)
     {
+
+
         if (
-            $url == "salir" || $url == "usuarios"
+            $url == "salir" || $url == "usuarios" ||   $url == "trabajadores"
         ) {
-            echo '<script src="Vistas/js/app/' . $url . '.js" ></script>';
+            echo '<script src="Vistas/js/app/' . $url . '.js" type="module" ></script>';
         }
     }
 }
