@@ -1,0 +1,33 @@
+body {
+  width: 21cm;
+  height: 29.7cm;
+  margin: 0 auto;
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: auto;
+}
+p {
+  text-align: justify;
+  font-size: 13px;
+  margin-bottom: auto;
+}
+p span {
+  font-weight: bold;
+  font-size: 13px;
+}
+.firmas {
+  margin-top: 100px;
+  margin-bottom: 30px;
+  width: 100%;
+  font-size: 13px;
+  text-align: center;
+}
+.firmas span:nth-child(2) {
+  margin-left: 250px;
+}
