@@ -3,34 +3,32 @@ import {
   crearSmartWizard,
   animacionBtn,
   removerAnimacionBtn,
+  LimpiarDataTable,
 } from "../helpers/funciones.js";
 import { validarInputs, validarSteepDos } from "./trabajadores/validaciones.js";
+
+import "../helpers/validaRut.js";
+
+document.addEventListener("DOMContentLoaded", async function (e) {
+  crearSmartWizard("smartCrear");
+  crearSmartWizard("smartEditar");
+
+  const trabajadores = await cargarTrabajadores();
+  renderizarTabla(trabajadores);
+});
 
 document.addEventListener("click", function (e) {
   if (
     e.target.className == "btn btn-danger Eliminar" ||
     e.target.className == "fa fa-trash"
   ) {
-    eliminarTrabajador();
+    eliminarTrabajador(e.target);
+  } else if (
+    e.target.className == "btn btn-primary Editar" ||
+    e.target.className == "fa fa-edit"
+  ) {
+    setearModalEditar(e.target);
   }
-});
-
-async function eliminarTrabajador() {
-  const confirmacion = await Swal.fire({
-    title: "¿Estás seguro?",
-    text: "¡No podrás revertir esto!",
-    icon: "warning",
-    showCancelButton: true,
-    cancelButtonColor: "#3085d6",
-    confirmButtonColor: "#d33",
-
-    confirmButtonText: "¡Sí, eliminar!",
-  });
-}
-
-document.addEventListener("DOMContentLoaded", function (e) {
-  crearDATATABLE("tabla-trabajadores", null, "trabajadores", 10, false);
-  crearSmartWizard("smartCrear");
 });
 
 //DECLARAR VARIABLES
@@ -54,7 +52,96 @@ const horarioN = document.getElementById("horarioN");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const finishBtn = document.getElementById("finishBtn");
-const url = 'Controladores/trabajadoresC.php';
+const url = "Controladores/trabajadoresC.php";
+
+async function cargarTrabajadores() {
+  const response = await fetch(url, {
+    method: "POST",
+    body: new URLSearchParams({ accion: "listar" }),
+  });
+  const data = await response.json();
+  return data;
+}
+
+function renderizarTabla(data) {
+  LimpiarDataTable("tabla-trabajadores");
+
+  const tbody = document.querySelector("#tabla-trabajadores tbody");
+
+  const { TRABAJADORES, ROL } = data;
+  let trs = [];
+  TRABAJADORES.forEach((trabajador) => {
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${trabajador.RUT}</td>
+      <td>${trabajador.NOMBRE}</td>
+      <td>${trabajador.CARGO}</td>
+      <td>${trabajador.LUGAR}</td>
+      <td>${trabajador.HORARIO}</td>
+      <td>
+        <button type="button" class="btn btn-primary Editar" data-toggle="modal" data-id="${trabajador.RUT}" data-target="#modalEditarTrabajador">
+          <i class="fa fa-edit"></i>
+        </button>
+ 
+        <button type="button" class="btn btn-success" data-toggle="modal" data-id="${trabajador.RUT}"  data-target="#modalImprimir">
+          <i class="fa fa-print"></i>
+        </button>
+        <button type="button" class="btn btn-danger Eliminar" data-id="${trabajador.RUT}">
+          <i class="fa fa-trash"></i>
+        </button>
+
+      </td>
+      `;
+
+    trs.push(tr);
+  });
+
+  tbody.append(...trs);
+
+  crearDATATABLE("tabla-trabajadores", null, "trabajadores", 10, false);
+}
+
+async function eliminarTrabajador(elemento) {
+  let id = "";
+  if (elemento.tagName == "I") {
+    id = elemento.parentElement.dataset.id;
+  } else {
+    id = elemento.dataset.id;
+  }
+  const { isConfirmed } = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "¡No podrás revertir esto!",
+    icon: "warning",
+    showCancelButton: true,
+    cancelButtonColor: "#3085d6",
+    confirmButtonColor: "#d33",
+    confirmButtonText: "¡Sí, eliminar!",
+  });
+
+  if (!isConfirmed) return;
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: new URLSearchParams({ accion: "eliminar", id }),
+  });
+
+  const { ESTADO, MOTIVO } = await response.json();
+
+  Swal.fire({
+    title: ESTADO ? "Exito" : "Error",
+    text: MOTIVO,
+    icon: ESTADO ? "success" : "error",
+    showCancelButton: false,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Aceptar",
+  });
+
+  if (ESTADO) {
+    renderizarTabla(await cargarTrabajadores());
+  }
+}
 
 prevBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -144,11 +231,43 @@ $(smartCrear).on(
     }
   }
 );
+$("input#rutN").rut({
+  formatOn: "keyup",
+  minimumLength: 8,
+  validateOn: "change",
+});
+
+rutN.addEventListener("blur", function (e) {
+  const res = $.validateRut(this.value);
+  if (res != true) {
+    Swal.fire({
+      title: "Error",
+      text: "El rut ingresado no es valido",
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+    });
+    rutN.classList.add("is-invalid");
+    rutN.classList.remove("is-valid");
+  } else {
+    rutN.classList.remove("is-invalid");
+    rutN.classList.add("is-valid");
+  }
+});
 
 finishBtn.addEventListener("click", async function (e) {
   animacionBtn(finishBtn, "Guardando...");
+
+  const rutSinSplitear = rutN.value.split("-");
+  const rutConPuntos = rutSinSplitear[0];
+  const dv = rutSinSplitear[1];
+  const rutSinPuntos = rutConPuntos.split(".").join("");
+
   const datos = {
-    rut: rutN.value,
+    rut: rutSinPuntos,
+    dv: dv,
     nombreUno: nombreUnoN.value,
     nombreDos: nombreDosN.value,
     apellidoUno: apellidoPaternoN.value,
@@ -175,7 +294,332 @@ finishBtn.addEventListener("click", async function (e) {
     body: data,
   });
 
-  const result = await response.json();
-  console.log(result);
+  const { ESTADO, MOTIVO } = await response.json();
+
   removerAnimacionBtn(finishBtn, "Finalizar Registro");
+
+  Swal.fire({
+    title: ESTADO ? "Exito" : "Error",
+    text: MOTIVO,
+    icon: ESTADO ? "success" : "error",
+    showCancelButton: false,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Aceptar",
+  });
+
+  if (ESTADO) {
+    renderizarTabla(await cargarTrabajadores());
+    limpiarCrear();
+  }
 });
+
+function limpiarCrear() {
+  $("#modalCrearTrabajador").modal("hide");
+  $(smartCrear).smartWizard("reset");
+  rutN.value = "";
+  nombreUnoN.value = "";
+  nombreDosN.value = "";
+  apellidoPaternoN.value = "";
+  apellidoMaternoN.value = "";
+  nacimientoN.value = "";
+  estadoCivilN.value = "";
+  direccionN.value = "";
+  emailN.value = "";
+  telefonoN.value = "";
+  afpN.value = "";
+  saludN.value = "";
+  cargoN.value = "";
+  lugarFuncionesN.value = "";
+  fechaIngresoN.value = "";
+  horarioN.value = "";
+
+  rutN.classList.remove("is-valid");
+  nombreUnoN.classList.remove("is-valid");
+  nombreDosN.classList.remove("is-valid");
+  apellidoPaternoN.classList.remove("is-valid");
+  apellidoMaternoN.classList.remove("is-valid");
+  nacimientoN.classList.remove("is-valid");
+  estadoCivilN.classList.remove("is-valid");
+  direccionN.classList.remove("is-valid");
+  emailN.classList.remove("is-valid");
+  telefonoN.classList.remove("is-valid");
+  afpN.classList.remove("is-valid");
+  saludN.classList.remove("is-valid");
+  cargoN.classList.remove("is-valid");
+  lugarFuncionesN.classList.remove("is-valid");
+  fechaIngresoN.classList.remove("is-valid");
+  horarioN.classList.remove("is-valid");
+}
+
+/*
+============================================================
+==============EDITAR TRABAJADOR=============================
+============================================================
+*/
+
+//DECLARAR VARIABLES
+const smartEditar = document.getElementById("smartEditar");
+const idTrabajador = document.getElementById("idTrabajador");
+const rutEd = document.getElementById("rutEd");
+const nombreUnoEd = document.getElementById("nombreUnoEd");
+const nombreDosEd = document.getElementById("nombreDosEd");
+const apellidoPaternoEd = document.getElementById("apellidoPaternoEd");
+const apellidoMaternoEd = document.getElementById("apellidoMaternoEd");
+const nacimientoEd = document.getElementById("nacimientoEd");
+const estadoCivilEd = document.getElementById("estadoCivilEd");
+const direccionEd = document.getElementById("direccionEd");
+const emailEd = document.getElementById("emailEd");
+const telefonoEd = document.getElementById("telefonoEd");
+const afpEd = document.getElementById("afpEd");
+const saludEd = document.getElementById("saludEd");
+const cargoEd = document.getElementById("cargoEd");
+const lugarFuncionesEd = document.getElementById("lugarFuncionesEd");
+const fechaIngresoEd = document.getElementById("fechaIngresoEd");
+const horarioEd = document.getElementById("horarioEd");
+const prevBtnEd = document.getElementById("prevBtnEd");
+const nextBtnEd = document.getElementById("nextBtnEd");
+const finishBtnEd = document.getElementById("finishBtnEd");
+
+prevBtnEd.addEventListener("click", function (e) {
+  e.preventDefault();
+  $(smartEditar).smartWizard("prev");
+});
+
+nextBtnEd.addEventListener("click", function (e) {
+  e.preventDefault();
+  $(smartEditar).smartWizard("next");
+});
+
+//EVENTO PARA CAMBIAR EL ESTADO DEL BOTON FINISH
+$(smartEditar).on(
+  "stepContent",
+  function (e, anchorObject, stepIndex, stepDirection) {
+    const li = document
+      .querySelector("#smartEditar .nav")
+      .querySelectorAll("li");
+    if (stepIndex == li.length - 1) {
+      finishBtnEd.classList.remove("d-none");
+      nextBtnEd.classList.add("d-none");
+    } else {
+      finishBtnEd.classList.add("d-none");
+      nextBtnEd.classList.remove("d-none");
+    }
+  }
+);
+
+$(smartEditar).on(
+  "leaveStep",
+  function (e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
+    if (stepDirection === "forward") {
+      if (currentStepIndex === 0) {
+        const datos = [
+          rutEd,
+          nombreUnoEd,
+          nombreDosEd,
+          apellidoPaternoEd,
+          apellidoMaternoEd,
+          nacimientoEd,
+          estadoCivilEd,
+        ];
+        const result = validarInputs(datos);
+
+        if (!result) {
+          Swal.fire({
+            icon: "info",
+            title: "Oops...",
+            text: "Revise los campos que están incompletos en el paso 1",
+          });
+          e.preventDefault();
+        }
+      } else if (currentStepIndex === 1) {
+        const datos = [emailEd, direccionEd, telefonoEd];
+        const result = validarSteepDos(datos);
+        if (!result) {
+          Swal.fire({
+            icon: "info",
+            title: "Oops...",
+            text: "Revise los campos que están incompletos en el paso 2",
+          });
+          e.preventDefault();
+        }
+      } else if (currentStepIndex === 2) {
+        const datos = [afpEd, saludEd];
+        const result = validarInputs(datos);
+        if (!result) {
+          Swal.fire({
+            icon: "info",
+            title: "Oops...",
+            text: "Revise los campos que están incompletos en el paso 3",
+          });
+          e.preventDefault();
+        }
+      } else if (currentStepIndex === 3) {
+        const datos = [cargoEd, lugarFuncionesEd, fechaIngresoEd, horarioEd];
+        const result = validarInputs(datos);
+        if (!result) {
+          Swal.fire({
+            icon: "info",
+            title: "Oops...",
+            text: "Revise los campos que están incompletos en el paso 4",
+          });
+          e.preventDefault();
+        }
+      }
+    }
+  }
+);
+$("input#rutEd").rut({
+  formatOn: "keyup",
+  minimumLength: 8,
+  validateOn: "change",
+});
+
+rutEd.addEventListener("blur", function (e) {
+  const res = $.validateRut(this.value);
+  if (res != true) {
+    Swal.fire({
+      title: "Error",
+      text: "El rut ingresado no es valido",
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+    });
+    rutEd.classList.add("is-invalid");
+    rutEd.classList.remove("is-valid");
+  } else {
+    rutEd.classList.remove("is-invalid");
+    rutEd.classList.add("is-valid");
+  }
+});
+
+async function setearModalEditar(elemento) {
+  let id = "";
+  if (elemento.tagName == "I") {
+    id = elemento.parentElement.dataset.id;
+  } else {
+    id = elemento.dataset.id;
+  }
+  const response = await fetch(url, {
+    method: "POST",
+    body: new URLSearchParams({ accion: "buscar", id }),
+  });
+  const data = await response.json();
+  console.log(data);
+  idTrabajador.value = data.RUT;
+  rutEd.value = $.formatRut(`${data.RUT}${data.DV}`);
+  nombreUnoEd.value = data.NOMBRE_UNO;
+  nombreDosEd.value = data.NOMBRE_DOS;
+  apellidoPaternoEd.value = data.APELLIDO_UNO;
+  apellidoMaternoEd.value = data.APELLIDO_DOS;
+  nacimientoEd.value = data.NACIMIENTO;
+  estadoCivilEd.value = data.CIVIL;
+  direccionEd.value = data.DIRECCION;
+  emailEd.value = data.EMAIL;
+  telefonoEd.value = data.TELEFONO;
+  afpEd.value = data.AFP;
+  saludEd.value = data.SALUD;
+  cargoEd.value = data.CARGO;
+  lugarFuncionesEd.value = data.LUGAR;
+  fechaIngresoEd.value = data.CONTRATO;
+  horarioEd.value = data.HORARIO;
+}
+
+finishBtnEd.addEventListener("click", async function (e) {
+  animacionBtn(finishBtnEd, "Actualizando...");
+
+  const rutSinSplitear = rutEd.value.split("-");
+  const rutConPuntos = rutSinSplitear[0];
+  const dv = rutSinSplitear[1];
+  const rutSinPuntos = rutConPuntos.split(".").join("");
+
+  const datos = {
+    id: idTrabajador.value,
+    rut: rutSinPuntos,
+    dv: dv,
+    nombreUno: nombreUnoEd.value,
+    nombreDos: nombreDosEd.value,
+    apellidoUno: apellidoPaternoEd.value,
+    apellidoDos: apellidoMaternoEd.value,
+    nacimiento: nacimientoEd.value,
+    civil: estadoCivilEd.value,
+    direccion: direccionEd.value,
+    email: emailEd.value,
+    telefono: telefonoEd.value,
+    afp: afpEd.value,
+    salud: saludEd.value,
+    cargo: cargoEd.value,
+    lugar: lugarFuncionesEd.value,
+    fechaIngreso: fechaIngresoEd.value,
+    horario: horarioEd.value,
+  };
+
+  console.log(datos);
+  const data = new FormData();
+  data.append("datos", JSON.stringify(datos));
+  data.append("accion", "actualizar");
+
+  const response = await fetch(url, {
+    method: "POST",
+    body: data,
+  });
+
+  const { ESTADO, MOTIVO } = await response.json();
+
+  removerAnimacionBtn(finishBtnEd, "Finalizar");
+
+  Swal.fire({
+    title: ESTADO ? "Exito" : "Error",
+    text: MOTIVO,
+    icon: ESTADO ? "success" : "error",
+    showCancelButton: false,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Aceptar",
+  });
+
+  if (ESTADO) {
+    limpiarEditar();
+    renderizarTabla(await cargarTrabajadores());
+  }
+});
+
+function limpiarEditar() {
+  $("#modalEditarTrabajador").modal("hide");
+  $(smartEditar).smartWizard("reset");
+  rutEd.value = "";
+  nombreUnoEd.value = "";
+  nombreDosEd.value = "";
+  apellidoPaternoEd.value = "";
+  apellidoMaternoEd.value = "";
+  nacimientoEd.value = "";
+  estadoCivilEd.value = "";
+  direccionEd.value = "";
+  emailEd.value = "";
+  telefonoEd.value = "";
+  afpEd.value = "";
+  saludEd.value = "";
+  cargoEd.value = "";
+  lugarFuncionesEd.value = "";
+  fechaIngresoEd.value = "";
+  horarioEd.value = "";
+
+  rutEd.classList.remove("is-valid");
+  nombreUnoEd.classList.remove("is-valid");
+  nombreDosEd.classList.remove("is-valid");
+  apellidoPaternoEd.classList.remove("is-valid");
+  apellidoMaternoEd.classList.remove("is-valid");
+  nacimientoEd.classList.remove("is-valid");
+  estadoCivilEd.classList.remove("is-valid");
+  direccionEd.classList.remove("is-valid");
+  emailEd.classList.remove("is-valid");
+  telefonoEd.classList.remove("is-valid");
+  afpEd.classList.remove("is-valid");
+  saludEd.classList.remove("is-valid");
+  cargoEd.classList.remove("is-valid");
+  lugarFuncionesEd.classList.remove("is-valid");
+  fechaIngresoEd.classList.remove("is-valid");
+  horarioEd.classList.remove("is-valid");
+}

@@ -7,7 +7,7 @@ class conexionBD
     static public function cBD()
     {
         //BASE DE DATOS DE DESARROLLO
-           $dbname = "ADMIN_WEB";
+           $dbname = "SAGRICH";
            $user = 'root';
            $pass = '';
            $host = 'localhost';

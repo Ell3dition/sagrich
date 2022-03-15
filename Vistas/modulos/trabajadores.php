@@ -58,30 +58,7 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <tr>
-                <td>17981014-k</td>
-                <td>Juan Perez</td>
-                <td>Av. Las Flores #123</td>
-                <td>+56912345678</td>
-                <td>Fonasa</td>
-                <td>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditar">
-                    <i class="fa fa-edit"></i>
-                  </button>
-           
-                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalImprimir">
-                    <i class="fa fa-print"></i>
-                  </button>
-                  <button type="button" class="btn btn-danger Eliminar">
-                    <i class="fa fa-trash"></i>
-                  </button>
-
-                </td>
-              </tr> -->
-
-
-
-            </tbody>
+           </tbody>
 
           </table>
         </div>
