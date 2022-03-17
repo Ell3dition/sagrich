@@ -31,3 +31,96 @@ p span {
 .firmas span:nth-child(2) {
   margin-left: 250px;
 }
+
+.filas {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/*TABLA CONTRATO*/
+#tablaDatosContrato {
+  margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 13px;
+}
+#tablaDatosContrato tr td:nth-child(2) {
+  text-align: center;
+  font-weight: bold;
+}
+
+
+/*TABLA DESCRIPCION ODI*/
+.tablaDescripcionOdi table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+  font-size: 12px;
+}
+
+.tablaDescripcionOdi table tr td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: left;
+}
+.tablaDescripcionOdi table tr th {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+
+.tablaFooterOdi {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+}
+.tablaFooterOdi thead tr th {
+  height: 50px;
+}
+.tablaFooterOdi tbody {
+  text-align: center;}
+
+
+
+  /*TABLAS REGISTRO INDIVIDUAL DE INDUCCION*/
+  #tablaEncabezadoInduccion {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  #tablaEncabezadoInduccion tbody tr td {
+    border: 1px solid #000;
+    padding: 5px;
+  }
+  #tablaEncabezadoInduccion tbody tr td:nth-child(2),
+  #tablaEncabezadoInduccion tbody tr:nth-child(2) {
+    font-weight: bold;
+  }
+
+  #tablaDatosTrabajadorInduccion {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #000;
+  }
+
+  #tablaDatosTrabajadorInduccion tbody tr td:nth-child(2) {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  #tablaFooterInduccion {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #000;
+  }
+  #tablaFooterInduccion thead tr th {
+    height: 50px;
+  }
+  #tablaFooterInduccion tbody {
+    text-align: center;
+  }
