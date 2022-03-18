@@ -7,36 +7,37 @@ export {
   exportTableToExcel,
   animacionBtn,
   removerAnimacionBtn,
-  crearSmartWizard
+  crearSmartWizard,
 };
 
 //FORMATEAR FECHA
 function formatoFecha(fecha) {
+  console.log(fecha);
   const meses = [
-    'ENE',
-    'FEB',
-    'MAR',
-    'ABR',
-    'MAY',
-    'JUN',
-    'JUL',
-    'AGO',
-    'SEP',
-    'OCT',
-    'NOV',
-    'DIC',
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
   ];
 
-  let fechaSplit = fecha.split('-');
+  let fechaSplit = fecha.split("-");
   let numeroMes = fechaSplit[1];
   let nombreMes = meses.filter((mes, i) => {
-    if ((numeroMes-1) == i) {
+    if (numeroMes - 1 == i) {
       return mes;
     }
   });
   {
   }
-  return `${fechaSplit[2]} ${nombreMes[0]} ${fechaSplit[0]}`;
+  return `${fechaSplit[2]} de ${nombreMes[0]} de ${fechaSplit[0]}`;
 }
 
 //VALIDAR SI ES NUMERO O NO
@@ -45,8 +46,8 @@ function is_numeric(value) {
 }
 
 function LimpiarDataTable(idTabla) {
-  let tabla = $('#' + idTabla).DataTable();
- 
+  let tabla = $("#" + idTabla).DataTable();
+
   if (tabla != null) {
     tabla.clear();
     tabla.destroy();
@@ -54,7 +55,13 @@ function LimpiarDataTable(idTabla) {
 }
 
 //CREAR DATATABLE
-function crearDATATABLE(idTabla, title = null, filename, page = 20, footer = false) {
+function crearDATATABLE(
+  idTabla,
+  title = null,
+  filename,
+  page = 20,
+  footer = false
+) {
   $("#" + idTabla).DataTable({
     pageLength: page,
     language: {
@@ -100,7 +107,7 @@ function crearDATATABLE(idTabla, title = null, filename, page = 20, footer = fal
           //definimos estilos del boton de excel
           extend: "excel",
           text: "Exportar a Excel",
-          className: "btn btn-warning", 
+          className: "btn btn-warning btn-sm mb-2 d-flex",
 
           excelStyles: [
             {
@@ -126,55 +133,58 @@ function crearDATATABLE(idTabla, title = null, filename, page = 20, footer = fal
       ],
     },
   });
+
+  //ESTILOS INPUT BUSCAR DATATABLE
+  const contenedor = document.querySelector(".dataTables_filter");
+  const input = document.querySelector(".dataTables_filter input");
+
+  console.log(contenedor);
+  contenedor.classList.add("d-md-block", "d-flex");
+  input.style.borderRadius = "20px";
+  input.classList.add("mt-2");
 }
-
-
 
 //VER CONTRASEÑAS EN LOS INPUTS
 function vercontraseña(idIconEye, idInputPass) {
   const iconEye = document.getElementById(idIconEye);
   const inputPass = document.getElementById(idInputPass);
-  iconEye.addEventListener('click', function (e) {
+  iconEye.addEventListener("click", function (e) {
     const type =
-      inputPass.getAttribute('type') === 'password' ? 'text' : 'password';
-    inputPass.setAttribute('type', type);
+      inputPass.getAttribute("type") === "password" ? "text" : "password";
+    inputPass.setAttribute("type", type);
 
-    this.classList.toggle('fa-eye-slash');
+    this.classList.toggle("fa-eye-slash");
   });
 }
 
 //EXPORTAR EXCEL
-function exportTableToExcel(tableID, filename = 'reporte.xls'){
-  
+function exportTableToExcel(tableID, filename = "reporte.xls") {
   const tabla = document.getElementById(tableID);
 
-  Exporter.export(tabla, filename+'.xls');
- 
+  Exporter.export(tabla, filename + ".xls");
 }
 
 //ANIMACION BOTON BUSCAR REGISTROS
 
-function animacionBtn(btn, texto ){
+function animacionBtn(btn, texto) {
+  let spanSpinner = document.createElement("SPAN");
+  spanSpinner.classList.add("spinner-grow", "spinner-grow-sm");
+  spanSpinner.setAttribute("role", "status");
+  spanSpinner.setAttribute("aria-hidden", "true");
 
-  let spanSpinner = document.createElement('SPAN');
-  spanSpinner.classList.add('spinner-grow','spinner-grow-sm');
-  spanSpinner.setAttribute('role','status');
-  spanSpinner.setAttribute('aria-hidden','true');
-
-  let spanText = document.createElement('SPAN');
+  let spanText = document.createElement("SPAN");
   spanText.textContent = ` ${texto}`;
 
   btn.textContent = "";
   btn.appendChild(spanSpinner);
   btn.appendChild(spanText);
-  btn.setAttribute('disabled', true);
+  btn.setAttribute("disabled", true);
 }
 
-function removerAnimacionBtn(btn, texto){
-  btn.removeAttribute('disabled');
+function removerAnimacionBtn(btn, texto) {
+  btn.removeAttribute("disabled");
   btn.textContent = texto;
 }
-
 
 function crearSmartWizard(idWizard) {
   $("#" + idWizard).smartWizard({
@@ -191,7 +201,7 @@ function crearSmartWizard(idWizard) {
     transition: {
       animation: "none", // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
       speed: "400", // Transion animation speed
-      easing: "", // Transition animation easing. Not supported without a jQuery easing plugin
+      // Transition animation easing. Not supported without a jQuery easing plugin
     },
     toolbarSettings: {
       toolbarPosition: "none", // none, top, bottom, both
@@ -203,6 +213,9 @@ function crearSmartWizard(idWizard) {
       markAllPreviousStepsAsDone: true, // When a step selected by url hash, all previous steps are marked done
       removeDoneStepOnNavigateBack: true, // While navigate back done step after active step will be cleared
       enableAnchorOnDoneStep: true, // Enable/Disable the done steps navigation
+    },
+    keyboardSettings: {
+      keyNavigation: false, // Enable/Disable keyboard navigation(left and right keys are used if enabled)
     },
   });
 }

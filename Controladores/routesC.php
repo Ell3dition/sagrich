@@ -7,15 +7,24 @@ class RoutesC
 {
     function routesAdministrador($url)
     {
-           
-        if (
-            $url == "salir" || $url == "usuarios" ||  $url == "trabajadores"
-        ) {
-            include "Vistas/modulos/" . $_GET["url"] . ".php";
-        } else {
 
-            include "Vistas/modulos/pageNotFound.php";
+        if($url != ""){
+
+            if (
+                $url == "salir" || $url == "usuarios" ||  $url == "trabajadores"
+            ) {
+                include "Vistas/modulos/" . $_GET["url"] . ".php";
+            } else {
+    
+                include "Vistas/modulos/pageNotFound.php";
+            }
+
+        }else{
+
+            include "Vistas/modulos/trabajadores.php";
+
         }
+           
 
 
       

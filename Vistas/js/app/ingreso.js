@@ -18,7 +18,7 @@ formulario.addEventListener("submit", async function (e) {
   const { Estado, Motivo } = await response.json();
 
   if (Estado) {
-    window.location = "usuarios";
+    window.location = "trabajadores";
   } else {
     const { isConfirmed, isDenied, isDismissed } = await Swal.fire({
       icon: "error",

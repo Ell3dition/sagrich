@@ -8,10 +8,6 @@ include "../Modelos/trabajadoresM.php";
 
 class TrabajadoresC
 {
-
-
-
-
     function guardarTrabajadorC()
     {
         $datos = json_decode($_POST['datos'], true);
@@ -23,7 +19,7 @@ class TrabajadoresC
             || empty($datos["nacimiento"]) || empty($datos["civil"])
             || empty($datos["direccion"]) || empty($datos["telefono"]) || empty($datos["email"])
             || empty($datos["afp"]) || empty($datos["salud"]) || empty($datos["cargo"]) || empty($datos["lugar"])
-            || empty($datos["fechaIngreso"]) || empty($datos["horario"])
+            || empty($datos["fechaIngreso"]) || empty($datos["horario"]) || empty($datos["nombreFaena"])
         ) {
             echo json_encode(array("ESTADO" => false, "MOTIVO" => "Faltan datos obligatorios" . $datos["nombreDos"]));
             return;
@@ -53,18 +49,23 @@ class TrabajadoresC
 
     function listarTrabajadoresC()
     {
-        $respuesta = TrabajadoresM::listarTrabajadoresM();
+        $condicion = $_POST['todos'] == "todos" ? "" : "WHERE ESTADO = 'ACTIVO'";
+
+      
+
+        $respuesta = TrabajadoresM::listarTrabajadoresM($condicion);
         echo json_encode(array("TRABAJADORES" => $respuesta, "ROL" => $_SESSION["rol"]));
     }
 
-    function eliminarTrabajadoresC()
+    function cambiarEstadoTrabajadorC()
     {
         $rut = $_POST["id"];
         //DIVIDIR RUT
         $rut = explode("-", $rut);
 
+        $estado = $_POST["estado"] == "ACTIVAR" ? "ACTIVO" : "DESHABILITADO";
 
-        $respuesta = TrabajadoresM::eliminarTrabajadorM($rut[0]);
+        $respuesta = TrabajadoresM::cambiarEstadoTrabajadorM($rut[0], $estado);
         echo json_encode($respuesta);
     }
 
@@ -91,7 +92,7 @@ class TrabajadoresC
             || empty($datos["nacimiento"]) || empty($datos["civil"])
             || empty($datos["direccion"]) || empty($datos["telefono"]) || empty($datos["email"])
             || empty($datos["afp"]) || empty($datos["salud"]) || empty($datos["cargo"]) || empty($datos["lugar"])
-            || empty($datos["fechaIngreso"]) || empty($datos["horario"])
+            || empty($datos["fechaIngreso"]) || empty($datos["horario"]) || empty($datos["nombreFaena"])
         ) {
             echo json_encode(array("ESTADO" => false, "MOTIVO" => "Faltan datos obligatorios" . $datos["nombreDos"]));
             return;
@@ -125,6 +126,18 @@ class TrabajadoresC
 
 
     }
+
+
+    function imprimirC(){
+    
+        $documento = json_decode($_POST["documentos"], true);
+        $_SESSION["documentos"] = $documento;
+
+        echo json_encode(array("ESTADO" => true));
+
+
+    }
+
 }
 
 if ($_POST['accion'] == 'guardar') {
@@ -135,10 +148,10 @@ if ($_POST['accion'] == 'guardar') {
 
     $trabajador = new TrabajadoresC();
     $trabajador->listarTrabajadoresC();
-}else if($_POST['accion'] == 'eliminar') {
+}else if($_POST['accion'] == 'cambiarEstado') {
 
     $trabajador = new TrabajadoresC();
-    $trabajador->eliminarTrabajadoresC();
+    $trabajador->cambiarEstadoTrabajadorC();
 }else if($_POST['accion'] == 'buscar') {
 
     $trabajador = new TrabajadoresC();
@@ -147,4 +160,8 @@ if ($_POST['accion'] == 'guardar') {
 
     $trabajador = new TrabajadoresC();
     $trabajador->actualizarTrabajadorC();
+}else if($_POST['accion'] == 'imprimir') {
+
+    $trabajador = new TrabajadoresC();
+    $trabajador->imprimirC();
 }

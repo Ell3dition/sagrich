@@ -4,8 +4,13 @@ import {
   animacionBtn,
   removerAnimacionBtn,
   LimpiarDataTable,
+  formatoFecha,
 } from "../helpers/funciones.js";
-import { validarInputs, validarSteepDos } from "./trabajadores/validaciones.js";
+import {
+  validarInputs,
+  validarSteepCuatro,
+  validarSteepDos,
+} from "./trabajadores/validaciones.js";
 
 import "../helpers/validaRut.js";
 
@@ -22,12 +27,22 @@ document.addEventListener("click", function (e) {
     e.target.className == "btn btn-danger Eliminar" ||
     e.target.className == "fa fa-trash"
   ) {
-    eliminarTrabajador(e.target);
+    cambiarEstadoTrabajador(e.target, "DESHABILITAR");
   } else if (
     e.target.className == "btn btn-primary Editar" ||
     e.target.className == "fa fa-edit"
   ) {
     setearModalEditar(e.target);
+  } else if (
+    e.target.className == "btn btn-success Imprimir" ||
+    e.target.className == "fa fa-print"
+  ) {
+    setearModalImprimir(e.target);
+  } else if (
+    e.target.className == "btn btn-success Activar" ||
+    e.target.className == "fa fa-check"
+  ) {
+    cambiarEstadoTrabajador(e.target, "ACTIVAR");
   }
 });
 
@@ -46,18 +61,38 @@ const telefonoN = document.getElementById("telefonoN");
 const afpN = document.getElementById("afpN");
 const saludN = document.getElementById("saludN");
 const cargoN = document.getElementById("cargoN");
+
 const lugarFuncionesN = document.getElementById("lugarFuncionesN");
+
+const nombreFaenaN = document.getElementById("nombreFaenaN");
 const fechaIngresoN = document.getElementById("fechaIngresoN");
 const horarioN = document.getElementById("horarioN");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const finishBtn = document.getElementById("finishBtn");
+
+const nombreTrabajadorModalImp = document.getElementById("nombreTrabajador");
+const faenaModalImp = document.getElementById("faena");
+const idTrabajadorImp = document.getElementById("idTrabajadorImp");
+const btnImprimirDocumentos = document.getElementById("btnImprimirDocumentos");
+const tablaDocumentosAImprimir = document.getElementById(
+  "tablaDocumentosAImprimir"
+);
+
+const checkTodos = document.getElementById("checkTodos");
+
+checkTodos.addEventListener("change", async function (e) {
+  renderizarTabla(await cargarTrabajadores());
+});
+
 const url = "Controladores/trabajadoresC.php";
 
 async function cargarTrabajadores() {
+  const todos = checkTodos.checked ? "todos" : "";
+
   const response = await fetch(url, {
     method: "POST",
-    body: new URLSearchParams({ accion: "listar" }),
+    body: new URLSearchParams({ accion: "listar", todos }),
   });
   const data = await response.json();
   return data;
@@ -72,6 +107,11 @@ function renderizarTabla(data) {
   let trs = [];
   TRABAJADORES.forEach((trabajador) => {
     const tr = document.createElement("tr");
+    const btns = configurarBtns(trabajador, ROL);
+
+    if (trabajador.ESTADO != "ACTIVO") {
+      tr.classList.add("table-danger");
+    }
 
     tr.innerHTML = `
       <td>${trabajador.RUT}</td>
@@ -80,16 +120,7 @@ function renderizarTabla(data) {
       <td>${trabajador.LUGAR}</td>
       <td>${trabajador.HORARIO}</td>
       <td>
-        <button type="button" class="btn btn-primary Editar" data-toggle="modal" data-id="${trabajador.RUT}" data-target="#modalEditarTrabajador">
-          <i class="fa fa-edit"></i>
-        </button>
- 
-        <button type="button" class="btn btn-success" data-toggle="modal" data-id="${trabajador.RUT}"  data-target="#modalImprimir">
-          <i class="fa fa-print"></i>
-        </button>
-        <button type="button" class="btn btn-danger Eliminar" data-id="${trabajador.RUT}">
-          <i class="fa fa-trash"></i>
-        </button>
+        ${btns}
 
       </td>
       `;
@@ -102,28 +133,34 @@ function renderizarTabla(data) {
   crearDATATABLE("tabla-trabajadores", null, "trabajadores", 10, false);
 }
 
-async function eliminarTrabajador(elemento) {
+async function cambiarEstadoTrabajador(elemento, estado) {
   let id = "";
   if (elemento.tagName == "I") {
     id = elemento.parentElement.dataset.id;
   } else {
     id = elemento.dataset.id;
   }
-  const { isConfirmed } = await Swal.fire({
-    title: "¿Estás seguro?",
-    text: "¡No podrás revertir esto!",
-    icon: "warning",
-    showCancelButton: true,
-    cancelButtonColor: "#3085d6",
-    confirmButtonColor: "#d33",
-    confirmButtonText: "¡Sí, eliminar!",
-  });
 
-  if (!isConfirmed) return;
+  if(estado != "ACTIVAR"){
+    const { isConfirmed } = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonColor: "#3085d6",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "¡Sí, eliminar!",
+    });
+  
+    if (!isConfirmed) return;
+  
 
+  }
+
+  
   const response = await fetch(url, {
     method: "POST",
-    body: new URLSearchParams({ accion: "eliminar", id }),
+    body: new URLSearchParams({ accion: "cambiarEstado", id, estado }),
   });
 
   const { ESTADO, MOTIVO } = await response.json();
@@ -217,8 +254,14 @@ $(smartCrear).on(
           e.preventDefault();
         }
       } else if (currentStepIndex === 3) {
-        const datos = [cargoN, lugarFuncionesN, fechaIngresoN, horarioN];
-        const result = validarInputs(datos);
+        const datos = [
+          lugarFuncionesN,
+          cargoN,
+          nombreFaenaN,
+          fechaIngresoN,
+          horarioN,
+        ];
+        const result = validarSteepCuatro(datos);
         if (!result) {
           Swal.fire({
             icon: "info",
@@ -265,6 +308,8 @@ finishBtn.addEventListener("click", async function (e) {
   const dv = rutSinSplitear[1];
   const rutSinPuntos = rutConPuntos.split(".").join("");
 
+  const direccionFaena = lugarFuncionesN.value.split(",")[0];
+  const comunaFaena = lugarFuncionesN.value.split(",")[1];
   const datos = {
     rut: rutSinPuntos,
     dv: dv,
@@ -280,7 +325,9 @@ finishBtn.addEventListener("click", async function (e) {
     afp: afpN.value,
     salud: saludN.value,
     cargo: cargoN.value,
-    lugar: lugarFuncionesN.value,
+    lugar: direccionFaena,
+    comuna: comunaFaena,
+    nombreFaena: nombreFaenaN.value,
     fechaIngreso: fechaIngresoN.value,
     horario: horarioN.value,
   };
@@ -331,6 +378,7 @@ function limpiarCrear() {
   saludN.value = "";
   cargoN.value = "";
   lugarFuncionesN.value = "";
+  nombreFaenaN.value = "";
   fechaIngresoN.value = "";
   horarioN.value = "";
 
@@ -348,6 +396,7 @@ function limpiarCrear() {
   saludN.classList.remove("is-valid");
   cargoN.classList.remove("is-valid");
   lugarFuncionesN.classList.remove("is-valid");
+  nombreFaenaN.classList.remove("is-valid");
   fechaIngresoN.classList.remove("is-valid");
   horarioN.classList.remove("is-valid");
 }
@@ -375,6 +424,7 @@ const afpEd = document.getElementById("afpEd");
 const saludEd = document.getElementById("saludEd");
 const cargoEd = document.getElementById("cargoEd");
 const lugarFuncionesEd = document.getElementById("lugarFuncionesEd");
+const nombreFaenaEd = document.getElementById("nombreFaenaEd");
 const fechaIngresoEd = document.getElementById("fechaIngresoEd");
 const horarioEd = document.getElementById("horarioEd");
 const prevBtnEd = document.getElementById("prevBtnEd");
@@ -455,8 +505,14 @@ $(smartEditar).on(
           e.preventDefault();
         }
       } else if (currentStepIndex === 3) {
-        const datos = [cargoEd, lugarFuncionesEd, fechaIngresoEd, horarioEd];
-        const result = validarInputs(datos);
+        const datos = [
+          lugarFuncionesEd,
+          cargoEd,
+          nombreFaenaEd,
+          fechaIngresoEd,
+          horarioEd,
+        ];
+        const result = validarSteepCuatro(datos);
         if (!result) {
           Swal.fire({
             icon: "info",
@@ -522,7 +578,8 @@ async function setearModalEditar(elemento) {
   afpEd.value = data.AFP;
   saludEd.value = data.SALUD;
   cargoEd.value = data.CARGO;
-  lugarFuncionesEd.value = data.LUGAR;
+  lugarFuncionesEd.value = `${data.LUGAR}, ${data.COMUNA}`;
+  nombreFaenaEd.value = data.NOMBRE_FAENA;
   fechaIngresoEd.value = data.CONTRATO;
   horarioEd.value = data.HORARIO;
 }
@@ -534,6 +591,9 @@ finishBtnEd.addEventListener("click", async function (e) {
   const rutConPuntos = rutSinSplitear[0];
   const dv = rutSinSplitear[1];
   const rutSinPuntos = rutConPuntos.split(".").join("");
+
+  const direccionFaena = lugarFuncionesEd.value.split(",")[0];
+  const comunaFaena = lugarFuncionesEd.value.split(",")[1];
 
   const datos = {
     id: idTrabajador.value,
@@ -551,7 +611,9 @@ finishBtnEd.addEventListener("click", async function (e) {
     afp: afpEd.value,
     salud: saludEd.value,
     cargo: cargoEd.value,
-    lugar: lugarFuncionesEd.value,
+    lugar: direccionFaena,
+    comuna: comunaFaena,
+    nombreFaena: nombreFaenaEd.value,
     fechaIngreso: fechaIngresoEd.value,
     horario: horarioEd.value,
   };
@@ -603,6 +665,7 @@ function limpiarEditar() {
   saludEd.value = "";
   cargoEd.value = "";
   lugarFuncionesEd.value = "";
+  nombreFaenaEd.value = "";
   fechaIngresoEd.value = "";
   horarioEd.value = "";
 
@@ -620,6 +683,155 @@ function limpiarEditar() {
   saludEd.classList.remove("is-valid");
   cargoEd.classList.remove("is-valid");
   lugarFuncionesEd.classList.remove("is-valid");
+  nombreFaenaEd.classList.remove("is-valid");
   fechaIngresoEd.classList.remove("is-valid");
   horarioEd.classList.remove("is-valid");
+}
+
+function setearModalImprimir(elemento) {
+  let datos;
+  if (elemento.tagName == "I") {
+    datos = elemento.parentElement.dataset;
+  } else {
+    datos = elemento.dataset;
+  }
+  const { id, nombre, lugar } = datos;
+
+  nombreTrabajadorModalImp.innerText = nombre;
+  faenaModalImp.innerText = lugar;
+  idTrabajadorImp.value = id;
+}
+
+btnImprimirDocumentos.addEventListener("click", async function (e) {
+  try {
+    animacionBtn(btnImprimirDocumentos, "Configurando documentos...");
+
+    let documentos = [];
+    tablaDocumentosAImprimir.children[1].children.forEach((elemento) => {
+      const check = elemento.children[2].children[0];
+      if (check.checked) {
+        documentos.push(check.getAttribute("id"));
+      }
+    });
+
+    if (documentos.length == 0) {
+      Swal.fire({
+        title: "Error",
+        text: "Debe seleccionar al menos un documento",
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+      });
+
+      removerAnimacionBtn(btnImprimirDocumentos, "Imprimir");
+      return;
+    }
+
+    const id = idTrabajadorImp.value;
+    const response = await fetch(url, {
+      method: "POST",
+      body: new URLSearchParams({ accion: "buscar", id }),
+    });
+    const trabajador = await response.json();
+
+    //tbody
+
+    trabajador["RUT"] = $.formatRut(`${trabajador.RUT}-${trabajador.DV}`);
+    trabajador["CONTRATO"] = formatoFecha(trabajador.CONTRATO);
+    trabajador["NACIMIENTO"] = formatoFecha(trabajador.NACIMIENTO);
+    trabajador["LUGAR"] = `${trabajador.LUGAR}, ${trabajador.COMUNA}`;
+
+    console.log(trabajador);
+
+    localStorage.setItem("trabajador", JSON.stringify(trabajador));
+
+    // window.open("Documentos/", "_blank");
+
+    const data = new FormData();
+    data.append("accion", "imprimir");
+    data.append("trabajador", JSON.stringify(trabajador));
+    data.append("documentos", JSON.stringify(documentos));
+
+    const responseImp = await fetch(url, {
+      method: "POST",
+      body: data,
+    });
+
+    const respuesta = await responseImp.json();
+    removerAnimacionBtn(btnImprimirDocumentos, "Imprimir");
+    if (respuesta.ESTADO) {
+      window.open("Documentos/generarImpresion.php", "_blank");
+
+      Swal.fire({
+        title: "Exito",
+        text: "Documentos generados correctamente, por favor verifique que la impresora este conectada",
+        icon: "success",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+      });
+
+      $("#modalImprimir").modal("hide");
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo configurar el documento para imprimir, si el error persiste contácte al administrador",
+        icon: "error",
+        showCancelButton: false,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+      });
+    }
+  } catch (error) {
+    removerAnimacionBtn(btnImprimirDocumentos, "Imprimir");
+    Swal.fire({
+      title: "Error",
+      text: "No se pudo configurar el documento para imprimir, si el error persiste contácte al administrador",
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+    });
+  }
+});
+
+function configurarBtns(trabajador, ROL) {
+  let btns = "";
+  if (ROL == "ADMINISTRADOR") {
+    if (trabajador.ESTADO == "ACTIVO") {
+      btns += `
+      <button type="button" class="btn btn-primary Editar" data-toggle="modal" data-id="${trabajador.RUT}" data-target="#modalEditarTrabajador">
+      <i class="fa fa-edit"></i>
+    </button>
+  
+    <button type="button" class="btn btn-success Imprimir" data-toggle="modal" data-nombre="${trabajador.NOMBRE}" data-lugar="${trabajador.LUGAR}" data-id="${trabajador.RUT}"  data-target="#modalImprimir">
+      <i class="fa fa-print"></i>
+    </button>
+        <button type="button" class="btn btn-danger Eliminar" data-id="${trabajador.RUT}">
+          <i class="fa fa-trash"></i>
+        </button>`;
+    } else {
+      btns += `
+        <button type="button" class="btn btn-success Activar" data-id="${trabajador.RUT}">
+          <i class="fa fa-check"></i>
+        </button>`;
+    }
+  } else {
+    if (trabajador.ESTADO == "ACTIVO") {
+      btns += `<button type="button" class="btn btn-primary Editar" data-toggle="modal" data-id="${trabajador.RUT}" data-target="#modalEditarTrabajador">
+        <i class="fa fa-edit"></i>
+      </button>
+    
+      <button type="button" class="btn btn-success Imprimir" data-toggle="modal" data-nombre="${trabajador.NOMBRE}" data-lugar="${trabajador.LUGAR}" data-id="${trabajador.RUT}"  data-target="#modalImprimir">
+        <i class="fa fa-print"></i>
+      </button>`;
+    }
+  }
+
+  return btns;
 }

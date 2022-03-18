@@ -144,8 +144,15 @@
                 <div class="invalid-feedback">Campo requerido</div>
               </div>
               <div class="form-group">
-                <label for="lugarFuncionesEd">Lugar Funciones <small class="text-danger text-bold">*</small></label>
+                <label for="lugarFuncionesEd">Dirección Faena <small class="text-danger text-bold">*</small></label><br>
+                <div  class="alert alert-primary" role="alert" > La ciudad debe ir separa por una coma (,) despues de la dirección <br> Ej: Parcela # 74 LT 3A , San Clemente</div>
                 <input type="text" class="form-control" id="lugarFuncionesEd" name="lugarFuncionesEd" placeholder="Lugar Funciones">
+                <div class="invalid-feedback">Campo requerido</div>
+              </div>
+
+              <div class="form-group">
+                <label for="nombreFaenaEd">Nombre Faena <small class="text-danger text-bold">*</small></label>
+                <input type="text" class="form-control" id="nombreFaenaEd" name="nombreFaenaEd">
                 <div class="invalid-feedback">Campo requerido</div>
               </div>
               <div class="form-group">

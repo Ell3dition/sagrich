@@ -22,14 +22,11 @@
             <div class="box-header with-border">
 
                 <!---aqui Van los select por si aplicas filtro para la busqueda-->
+
                 <div class="container">
-                    <div class="row mt-2">
-                        <div class="col-md-1">
-                            <div class="form-group ">
-                                <label for="btnCrear"><br></label>
-                                <button type="button" data-toggle="modal" data-target="#crearFamilia" id="btnCrear"
-                                    class="btn btn-success align-self-center">Crear</button>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-md-center">
+                            <button data-toggle="modal" data-target="#crearFamilia" class="btn btn-success">Crear Usuario</button>
                         </div>
                     </div>
                 </div>
@@ -40,25 +37,27 @@
             <div class="box-body">
 
                 <!--EL CUERPO DEL PROYECTO TABLAS Y COSAS RARAS--->
+                <div class="container table-responsive">
 
-                <table class="table table-bordered table-hover TB" id="tabla">
+                    <table class="table table-bordered table-hover TB" id="tabla">
 
 
-                    <thead class="thead-dark">
+                        <thead class="thead-dark">
 
-                        <tr>
-                            <th>N°</th>
-                            <th>Usuario</th>
-                            <th>Foto</th>
-                            <th>Rol</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
+                            <tr>
+                                <th>N°</th>
+                                <th>Usuario</th>
+                                <th>Foto</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
 
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <!-- /.box-body -->
 
@@ -74,8 +73,7 @@
 
 
 <!-- Modal CREAR FAMILIA ESCUELA -->
-<div class="modal fade" id="crearFamilia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"                                       
-    aria-hidden="true">
+<div class="modal fade" id="crearFamilia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -90,7 +88,7 @@
                                     <input type="text" class="form-control" id="userN" name="userN" required>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-10">
                                 <div class="form-group">
 
@@ -132,8 +130,7 @@
 
 
 <!-- Modal EDITAR -->
-<div class="modal fade" id="Editar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"                                       
-    aria-hidden="true">
+<div class="modal fade" id="Editar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -150,7 +147,7 @@
                                     <input type="hidden" id="imgActualEd" name="imgActualEd">
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-10">
                                 <div class="form-group">
 
@@ -172,7 +169,7 @@
 
                                 <div class="form-group">
                                     <label for="fotoE">Imagen Actual </label>
-                                    <img id="imgActual" name="imgActual" class="img-fluid"  style="width: 150px;" alt="">
+                                    <img id="imgActual" name="imgActual" class="img-fluid" style="width: 150px;" alt="">
                                 </div>
                             </div>
 
@@ -191,6 +188,3 @@
         </div>
     </div>
 </div>
-
-
-

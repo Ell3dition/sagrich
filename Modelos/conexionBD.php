@@ -7,19 +7,19 @@ class conexionBD
     static public function cBD()
     {
         //BASE DE DATOS DE DESARROLLO
-           $dbname = "SAGRICH";
-           $user = 'root';
-           $pass = '';
-           $host = 'localhost';
+        //    $dbname = "SAGRICH";
+        //    $user = 'root';
+        //    $pass = '';
+        //    $host = 'localhost';
 
 
 
         //BASE DE DATOS PRODUCCION
 
-        // $dbname = "cma77781_ADMIN_WEB";
-        // $user = 'cma77781_cma77781';
-        // $pass = 'FdkAdkPkOaCYATLCmnCK';
-        // $host = '190.107.177.236';
+        $dbname = "csa80265_sagrich_sistema";
+        $user = 'csa80265_sagrich';
+        $pass = 'NU!@,68Y5tkg';
+        $host = 'localhost';
 
         try {
             $bd = new PDO("mysql:host=$host:3306;dbname=$dbname", $user, $pass);

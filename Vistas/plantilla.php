@@ -5,7 +5,6 @@ if (!isset($_SESSION)) {
 require_once "Controladores/routesC.php";
 require_once "Controladores/routesJSC.php";
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -13,30 +12,21 @@ require_once "Controladores/routesJSC.php";
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Sistema web para generar documentos">
+	<meta name="keywords" content="agricultura, generar, documentos">
+	<meta name="author" content="sertimac.cl">
   <title>SAGRICH SPA</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
-  <!-- Font Awesome -->
+ 
+ <!-- Font Awesome -->
   <link rel="stylesheet" href="Vistas/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="Vistas/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="Vistas/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="Vistas/plugins/jqvmap/jqvmap.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="Vistas/dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="Vistas/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="Vistas/plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="Vistas/plugins/summernote/summernote-bs4.css">
+  
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
@@ -92,7 +82,7 @@ require_once "Controladores/routesJSC.php";
       }
     } else {
 
-      include "modulos/inicio.php";
+      echo '<script> window.location = "trabajadores";</script>';
     }
 
     echo '</div>';
@@ -119,25 +109,7 @@ require_once "Controladores/routesJSC.php";
   </script>
   <!-- Bootstrap 4 -->
   <script src="Vistas/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- ChartJS -->
-  <script src="Vistas/plugins/chart.js/Chart.min.js"></script>
-  <!-- Sparkline -->
-  <script src="Vistas/plugins/sparklines/sparkline.js"></script>
-  <!-- JQVMap -->
-  <script src="Vistas/plugins/jqvmap/jquery.vmap.min.js"></script>
-  <script src="Vistas/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-  <!-- jQuery Knob Chart -->
-  <script src="Vistas/plugins/jquery-knob/jquery.knob.min.js"></script>
-  <!-- daterangepicker -->
-  <script src="Vistas/plugins/moment/moment.min.js"></script>
 
-  <script src="Vistas/plugins/daterangepicker/daterangepicker.js"></script>
-  <!-- Tempusdominus Bootstrap 4 -->
-  <script src="Vistas/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-  <!-- Summernote -->
-  <script src="Vistas/plugins/summernote/summernote-bs4.min.js"></script>
-  <!-- overlayScrollbars -->
-  <script src="Vistas/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
   <!-- AdminLTE App -->
   <script src="Vistas/dist/js/adminlte.js"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -151,7 +123,7 @@ require_once "Controladores/routesJSC.php";
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
 
-  
+  <!--Para los estilos del excel-->
   <script src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.1.2/js/buttons.html5.styles.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.1.2/js/buttons.html5.styles.templates.min.js"></script>
 
@@ -164,11 +136,12 @@ require_once "Controladores/routesJSC.php";
   <script src="Vistas/js/app/sidebar.js"></script>
   <script src="Vistas/dist/js/smart-wizard/jquery.smartWizard.js"></script>
 
+
   <?php
 
   if (isset($_SESSION["Ingreso"]) && $_SESSION["Ingreso"]  == TRUE) {
     echo ' <script src="Vistas/js/app/cabecera.js" type="module"></script>';
-    if ($_GET["url"] != "") {
+    if (isset($_GET["url"])) {
       if ($_SESSION["rol"] == "ADMINISTRADOR") {
 
         $routes = new RoutesJSC();

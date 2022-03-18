@@ -10,7 +10,7 @@ class TrabajadoresM extends ConexionBD
     static function guardarTrabajadorM($trabajador)
     {
 
-        $query = "INSERT INTO TRABAJADORES VALUES (:RUT, :DV, :NOMBRE_UNO, :NOMBRE_DOS, :APELLIDO_UNO, :APELLIDO_DOS, :FECHA_NACIMIENTO, :CIVIL, :DIRECCION, :EMAIL, :TELEFONO,  :AFP, :SALUD, :CARGO, :LUGAR, :FECHA_INGRESO, :HORARIO, 'ACTIVO')";
+        $query = "INSERT INTO TRABAJADORES VALUES (:RUT, :DV, :NOMBRE_UNO, :NOMBRE_DOS, :APELLIDO_UNO, :APELLIDO_DOS, :FECHA_NACIMIENTO, :CIVIL, :DIRECCION, :EMAIL, :TELEFONO,  :AFP, :SALUD, :CARGO, :LUGAR, :COMUNA , :NOMBRE_FAENA ,:FECHA_INGRESO, :HORARIO, 'ACTIVO')";
 
         $pdo = conexionBD::cBD()->prepare($query);
 
@@ -29,6 +29,8 @@ class TrabajadoresM extends ConexionBD
         $pdo->bindParam(":SALUD", $trabajador["salud"], PDO::PARAM_STR);
         $pdo->bindParam(":CARGO", $trabajador["cargo"], PDO::PARAM_STR);
         $pdo->bindParam(":LUGAR", $trabajador["lugar"], PDO::PARAM_STR);
+        $pdo->bindParam(":COMUNA", $trabajador["comuna"], PDO::PARAM_STR);
+        $pdo->bindParam(":NOMBRE_FAENA", $trabajador["nombreFaena"], PDO::PARAM_STR);
         $pdo->bindParam(":FECHA_INGRESO", $trabajador["fechaIngreso"], PDO::PARAM_STR);
         $pdo->bindParam(":HORARIO", $trabajador["horario"], PDO::PARAM_STR);
 
@@ -51,26 +53,31 @@ class TrabajadoresM extends ConexionBD
     }
 
 
-    static function listarTrabajadoresM()
+    static function listarTrabajadoresM($condicion)
     {
 
         $query = "SELECT CONCAT(T.RUT_TRABAJADOR,'-',T.DV_TRABAJADOR) AS RUT , 
         CONCAT(T.PRIMER_NOMBRE,' ',T.SEGUNDO_NOMBRE,' ',T.APELLIDO_PATERNO,' ',T.APELLIDO_MATERNO) AS NOMBRE, 
-        T.CARGO, T.LUGAR_FUNCIONES AS LUGAR, T.HORARIO FROM TRABAJADORES AS T WHERE ESTADO = 'ACTIVO'";
+        T.CARGO, T.NOMBRE_FAENA AS LUGAR, T.HORARIO , T.ESTADO FROM TRABAJADORES AS T $condicion";
         $pdo = conexionBD::cBD()->prepare($query);
         $pdo->execute();
         $trabajadores = $pdo->fetchAll(PDO::FETCH_ASSOC);
         return $trabajadores;
     }
 
-    static function eliminarTrabajadorM($rut){
+    static function cambiarEstadoTrabajadorM($rut, $estado){
 
-        $query = "UPDATE TRABAJADORES SET ESTADO = 'DESHABILITADO' WHERE RUT_TRABAJADOR = :RUT";
+        $query = "UPDATE TRABAJADORES SET ESTADO = :ESTADO WHERE RUT_TRABAJADOR = :RUT";
         $pdo = conexionBD::cBD()->prepare($query);
         $pdo->bindParam(":RUT", $rut, PDO::PARAM_STR);
-        $pdo->execute();
-        return array("ESTADO" => true, "MOTIVO" => "Trabajador eliminado correctamente");
-
+        $pdo->bindParam(":ESTADO", $estado, PDO::PARAM_STR);
+       
+        if( $pdo->execute()) {
+            return array("ESTADO" => true, "MOTIVO" => "Estado cambiado correctamente");
+        } else {
+            return array("ESTADO" => false, "MOTIVO" => "Error al cambiar el estado");
+        }
+    
 
 
     }
@@ -91,6 +98,8 @@ class TrabajadoresM extends ConexionBD
         T.SALUD AS SALUD,
         T.CARGO AS CARGO,
         T.LUGAR_FUNCIONES AS LUGAR,
+        T.COMUNA_FAENA AS COMUNA,
+        T.NOMBRE_FAENA AS NOMBRE_FAENA,
         T.FECHA_CONTRATO AS CONTRATO,
         T.HORARIO AS HORARIO
         FROM TRABAJADORES AS T
@@ -126,6 +135,8 @@ class TrabajadoresM extends ConexionBD
         SALUD = :SALUD,
         CARGO = :CARGO,
         LUGAR_FUNCIONES = :LUGAR,
+        COMUNA_FAENA = :COMUNA,
+        NOMBRE_FAENA = :NOMBRE_FAENA,
         FECHA_CONTRATO = :CONTRATO,
         HORARIO = :HORARIO
         WHERE RUT_TRABAJADOR = :id";
@@ -147,6 +158,8 @@ class TrabajadoresM extends ConexionBD
         $pdo->bindParam(":SALUD", $datos["salud"], PDO::PARAM_STR);
         $pdo->bindParam(":CARGO", $datos["cargo"], PDO::PARAM_STR);
         $pdo->bindParam(":LUGAR", $datos["lugar"], PDO::PARAM_STR);
+        $pdo->bindParam(":COMUNA", $datos["comuna"], PDO::PARAM_STR);
+        $pdo->bindParam(":NOMBRE_FAENA", $datos["nombreFaena"], PDO::PARAM_STR);
         $pdo->bindParam(":CONTRATO", $datos["fechaIngreso"], PDO::PARAM_STR);
         $pdo->bindParam(":HORARIO", $datos["horario"], PDO::PARAM_STR);
         if ($pdo->execute()) {
