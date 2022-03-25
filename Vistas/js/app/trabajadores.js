@@ -15,6 +15,8 @@ import {
 import "../helpers/validaRut.js";
 
 document.addEventListener("DOMContentLoaded", async function (e) {
+
+  console.log("%c¡ADVERTENCIA!, esta es una herramienta para desarrolladores", "color: #ff0000; font-size: 20px;");
   crearSmartWizard("smartCrear");
   crearSmartWizard("smartEditar");
 
@@ -114,7 +116,7 @@ function renderizarTabla(data) {
     }
 
     tr.innerHTML = `
-      <td>${trabajador.RUT}</td>
+      <td>${$.formatRut(trabajador.RUT)}</td>
       <td>${trabajador.NOMBRE}</td>
       <td>${trabajador.CARGO}</td>
       <td>${trabajador.LUGAR}</td>
@@ -258,7 +260,6 @@ $(smartCrear).on(
           lugarFuncionesN,
           cargoN,
           nombreFaenaN,
-          fechaIngresoN,
           horarioN,
         ];
         const result = validarSteepCuatro(datos);
@@ -509,7 +510,6 @@ $(smartEditar).on(
           lugarFuncionesEd,
           cargoEd,
           nombreFaenaEd,
-          fechaIngresoEd,
           horarioEd,
         ];
         const result = validarSteepCuatro(datos);
@@ -563,7 +563,7 @@ async function setearModalEditar(elemento) {
     body: new URLSearchParams({ accion: "buscar", id }),
   });
   const data = await response.json();
-  console.log(data);
+
   idTrabajador.value = data.RUT;
   rutEd.value = $.formatRut(`${data.RUT}${data.DV}`);
   nombreUnoEd.value = data.NOMBRE_UNO;
@@ -618,7 +618,7 @@ finishBtnEd.addEventListener("click", async function (e) {
     horario: horarioEd.value,
   };
 
-  console.log(datos);
+  
   const data = new FormData();
   data.append("datos", JSON.stringify(datos));
   data.append("accion", "actualizar");
@@ -743,7 +743,7 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
     trabajador["NACIMIENTO"] = formatoFecha(trabajador.NACIMIENTO);
     trabajador["LUGAR"] = `${trabajador.LUGAR}, ${trabajador.COMUNA}`;
 
-    console.log(trabajador);
+  
 
     localStorage.setItem("trabajador", JSON.stringify(trabajador));
 

@@ -1,5 +1,5 @@
   <section>
-    <header id="fechaEncabezado"><p>TALCA, ______________________</p></header>
+    <header id="fechaEncabezado"><p>San Clemente, ______________________</p></header>
     <div id="encabezadoCarta">
       Señor:<br />
 

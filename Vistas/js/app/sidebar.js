@@ -4,7 +4,7 @@ const url_actual = url.split("/");
 const abrir_sidebar = "menu-is-opening menu-open";
 const ul = document.querySelector(".sidebar nav ul");
 const listLi = document.querySelectorAll(".sidebar nav ul li");
-console.log("entro");;  
+
 
 listLi.forEach((li) => {
   const url_li = li.querySelector("a").getAttribute("href");

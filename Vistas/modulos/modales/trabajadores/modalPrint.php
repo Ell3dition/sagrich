@@ -44,62 +44,84 @@
                             <td>Declaración Simple COVID-19</td>
                             <td><input type="checkbox" name="declaracionSimpleCovid" id="declaracionSimpleCovid"></td>
                         </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Finiquito de Trabajo</td>
-                            <td><input type="checkbox" name="finiquitoDeTrabajo" id="finiquitoDeTrabajo"></td>
-                        </tr>
 
                         <tr>
-                            <th scope="row">4</th>
-                            <td>Registro Entrega de Elementos</td>
-                            <td><input type="checkbox" name="registroEntregaDeElementos" id="registroEntregaDeElementos"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>Registro Individual de Indución</td>
-                            <td><input type="checkbox" name="registroIndividualInduccion" id="registroIndividualInduccion"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">6</th>
-                            <td>Carta Termino de contrato</td>
-                            <td><input type="checkbox" name="cartaTerminoDeContrato" id="cartaTerminoDeContrato"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">7</th>
+                            <th scope="row">3</th>
                             <td>Comprobante de Reglamento Interno</td>
                             <td><input type="checkbox" name="comprobanteReglamentoInterno" id="comprobanteReglamentoInterno"></td>
                         </tr>
 
+
+
+
                         <tr>
-                            <th scope="row">8</th>
-                            <td>ODI Control Calidad</td>
-                            <td><input type="checkbox" name="odiControlCalidad" id="odiControlCalidad"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">9</th>
-                            <td>ODI Jefe Cuadrilla</td>
-                            <td><input type="checkbox" name="odiJefeCuadrilla" id="odiJefeCuadrilla"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">10</th>
-                            <td>ODI Junior</td>
-                            <td><input type="checkbox" name="odiJunior" id="odiJunior"></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">11</th>
+                            <th scope="row">4</th>
                             <td>ODI Obrero Agricola</td>
                             <td><input type="checkbox" name="odiObreroAgricola" id="odiObreroAgricola"></td>
                         </tr>
+
+
                         <tr>
-                            <th scope="row">12</th>
+                            <th scope="row">5</th>
+                            <td>ODI Supervisor</td>
+                            <td><input type="checkbox" name="odiSupervisor" id="odiSupervisor"></td>
+                        </tr>
+
+
+
+                        <tr>
+                            <th scope="row">6</th>
+                            <td>ODI Jefe Cuadrilla</td>
+                            <td><input type="checkbox" name="odiJefeCuadrilla" id="odiJefeCuadrilla"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">7</th>
+                            <td>ODI Control Calidad</td>
+                            <td><input type="checkbox" name="odiControlCalidad" id="odiControlCalidad"></td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">8</th>
                             <td>ODI Planillera</td>
                             <td><input type="checkbox" name="odiPlanillera" id="odiPlanillera"></td>
                         </tr>
+
+
+                        <tr>
+                            <th scope="row">9</th>
+                            <td>ODI Junior</td>
+                            <td><input type="checkbox" name="odiJunior" id="odiJunior"></td>
+                        </tr>
+
+
+                        <tr>
+                            <th scope="row">10</th>
+                            <td>Registro Entrega de Elementos</td>
+                            <td><input type="checkbox" name="registroEntregaDeElementos" id="registroEntregaDeElementos"></td>
+                        </tr>
+
+
+
+
+                        <tr>
+                            <th scope="row">11</th>
+                            <td>Registro Individual de Indución</td>
+                            <td><input type="checkbox" name="registroIndividualInduccion" id="registroIndividualInduccion"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">12</th>
+                            <td>Carta Termino de contrato</td>
+                            <td><input type="checkbox" name="cartaTerminoDeContrato" id="cartaTerminoDeContrato"></td>
+                        </tr>
+
+
+
+
                         <tr>
                             <th scope="row">13</th>
-                            <td>ODI Supervisor</td>
-                            <td><input type="checkbox" name="odiSupervisor" id="odiSupervisor"></td>
+                            <td>Finiquito de Trabajo</td>
+                            <td><input type="checkbox" name="finiquitoDeTrabajo" id="finiquitoDeTrabajo"></td>
                         </tr>
 
                     </tbody>

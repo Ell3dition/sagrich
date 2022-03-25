@@ -154,7 +154,7 @@
                 <div class="invalid-feedback">Campo requerido</div>
               </div>
               <div class="form-group">
-                <label for="fechaIngresoN">Fecha Contrato <small class="text-danger text-bold">*</small></label>
+                <label for="fechaIngresoN">Fecha Contrato</label>
                 <input type="date" class="form-control" id="fechaIngresoN" name="fechaIngresoN">
                 <div class="invalid-feedback">Campo requerido</div>
               </div>

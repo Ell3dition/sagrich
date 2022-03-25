@@ -28,7 +28,6 @@ if (isset($_SESSION["Ingreso"]) && $_SESSION["Ingreso"]  == TRUE) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sagrich</title>
   <link rel="stylesheet" href="configuracionDocumentos.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </head>
 <STYLE>

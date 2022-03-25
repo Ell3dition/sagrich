@@ -19,7 +19,7 @@ class TrabajadoresC
             || empty($datos["nacimiento"]) || empty($datos["civil"])
             || empty($datos["direccion"]) || empty($datos["telefono"]) || empty($datos["email"])
             || empty($datos["afp"]) || empty($datos["salud"]) || empty($datos["cargo"]) || empty($datos["lugar"])
-            || empty($datos["fechaIngreso"]) || empty($datos["horario"]) || empty($datos["nombreFaena"])
+            || empty($datos["horario"]) || empty($datos["nombreFaena"])
         ) {
             echo json_encode(array("ESTADO" => false, "MOTIVO" => "Faltan datos obligatorios" . $datos["nombreDos"]));
             return;
@@ -49,10 +49,7 @@ class TrabajadoresC
 
     function listarTrabajadoresC()
     {
-        $condicion = $_POST['todos'] == "todos" ? "" : "WHERE ESTADO = 'ACTIVO'";
-
-      
-
+        $condicion = $_POST['todos'] == "todos" ? "" : "WHERE ESTADO = 'ACTIVO'";  
         $respuesta = TrabajadoresM::listarTrabajadoresM($condicion);
         echo json_encode(array("TRABAJADORES" => $respuesta, "ROL" => $_SESSION["rol"]));
     }
@@ -92,7 +89,7 @@ class TrabajadoresC
             || empty($datos["nacimiento"]) || empty($datos["civil"])
             || empty($datos["direccion"]) || empty($datos["telefono"]) || empty($datos["email"])
             || empty($datos["afp"]) || empty($datos["salud"]) || empty($datos["cargo"]) || empty($datos["lugar"])
-            || empty($datos["fechaIngreso"]) || empty($datos["horario"]) || empty($datos["nombreFaena"])
+            || empty($datos["horario"]) || empty($datos["nombreFaena"])
         ) {
             echo json_encode(array("ESTADO" => false, "MOTIVO" => "Faltan datos obligatorios" . $datos["nombreDos"]));
             return;

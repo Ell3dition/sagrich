@@ -4,7 +4,7 @@
   <p>
     En <span class="comunaFaena"></span> a <span class="contratoTrabajador"></span> entre
     <span>Rodrigo Chirino González, C.I.16.455.003-6</span> en
-    representación de <span> SpA, RUT: 77.192.571-5</span>, ambos
+    representación de <span> SAGRICH SpA, RUT: 77.192.571-5</span>, ambos
     domiciliados en Mariposas PC 74 LT 3 -A, comuna de San Clemente, email:
     sagrichspa@gmail.com, en adelante “El Empleador” y
   </p>

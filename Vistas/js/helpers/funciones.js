@@ -12,7 +12,7 @@ export {
 
 //FORMATEAR FECHA
 function formatoFecha(fecha) {
-  console.log(fecha);
+
   const meses = [
     "Enero",
     "Febrero",
@@ -138,7 +138,6 @@ function crearDATATABLE(
   const contenedor = document.querySelector(".dataTables_filter");
   const input = document.querySelector(".dataTables_filter input");
 
-  console.log(contenedor);
   contenedor.classList.add("d-md-block", "d-flex");
   input.style.borderRadius = "20px";
   input.classList.add("mt-2");
