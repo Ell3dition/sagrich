@@ -28,7 +28,7 @@
         </div>
     <div class="col-md-12 mt-3">
         <div class="text-ligth text-md-left text-center">
-            <p>Desarrollado por <a href="https://www.sertimac.cl" target="_blank">SERTIMAC</a> V.1.0.0.</p>
+            <p>Desarrollado por <a href="https://www.sertimac.cl" target="_blank">SERTIMAC</a> V.1.1.0.</p>
         </div>
     </div>
 

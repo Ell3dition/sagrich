@@ -137,6 +137,10 @@ class TrabajadoresC
 
 }
 
+
+
+
+
 if ($_POST['accion'] == 'guardar') {
 
     $trabajador = new TrabajadoresC();

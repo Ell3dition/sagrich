@@ -96,6 +96,7 @@
                                     <select class="custom-select" name="rolN" id="rolN" required>
                                         <option value="0">Seleccione un Rol</option>
                                         <option value="ADMINISTRADOR">Administrador</option>
+                                        <option value="SUPERVISOR CAMPO">Supervisor Campo</option>
                                     </select>
 
                                 </div>

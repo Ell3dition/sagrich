@@ -13,17 +13,13 @@ import {
 } from "./trabajadores/validaciones.js";
 
 import "../helpers/validaRut.js";
-
 document.addEventListener("DOMContentLoaded", async function (e) {
-
   console.log("%c¡ADVERTENCIA!, esta es una herramienta para desarrolladores", "color: #ff0000; font-size: 20px;");
   crearSmartWizard("smartCrear");
   crearSmartWizard("smartEditar");
-
   const trabajadores = await cargarTrabajadores();
   renderizarTabla(trabajadores);
 });
-
 document.addEventListener("click", function (e) {
   if (
     e.target.className == "btn btn-danger Eliminar" ||
@@ -47,7 +43,6 @@ document.addEventListener("click", function (e) {
     cambiarEstadoTrabajador(e.target, "ACTIVAR");
   }
 });
-
 //DECLARAR VARIABLES
 const smartCrear = document.getElementById("smartCrear");
 const rutN = document.getElementById("rutN");
@@ -63,16 +58,13 @@ const telefonoN = document.getElementById("telefonoN");
 const afpN = document.getElementById("afpN");
 const saludN = document.getElementById("saludN");
 const cargoN = document.getElementById("cargoN");
-
 const lugarFuncionesN = document.getElementById("lugarFuncionesN");
-
 const nombreFaenaN = document.getElementById("nombreFaenaN");
 const fechaIngresoN = document.getElementById("fechaIngresoN");
 const horarioN = document.getElementById("horarioN");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const finishBtn = document.getElementById("finishBtn");
-
 const nombreTrabajadorModalImp = document.getElementById("nombreTrabajador");
 const faenaModalImp = document.getElementById("faena");
 const idTrabajadorImp = document.getElementById("idTrabajadorImp");
@@ -91,7 +83,6 @@ const url = "Controladores/trabajadoresC.php";
 
 async function cargarTrabajadores() {
   const todos = checkTodos.checked ? "todos" : "";
-
   const response = await fetch(url, {
     method: "POST",
     body: new URLSearchParams({ accion: "listar", todos }),
@@ -102,19 +93,15 @@ async function cargarTrabajadores() {
 
 function renderizarTabla(data) {
   LimpiarDataTable("tabla-trabajadores");
-
   const tbody = document.querySelector("#tabla-trabajadores tbody");
-
   const { TRABAJADORES, ROL } = data;
   let trs = [];
   TRABAJADORES.forEach((trabajador) => {
     const tr = document.createElement("tr");
     const btns = configurarBtns(trabajador, ROL);
-
     if (trabajador.ESTADO != "ACTIVO") {
       tr.classList.add("table-danger");
     }
-
     tr.innerHTML = `
       <td>${$.formatRut(trabajador.RUT)}</td>
       <td>${trabajador.NOMBRE}</td>
@@ -803,6 +790,7 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
 function configurarBtns(trabajador, ROL) {
   let btns = "";
   if (ROL == "ADMINISTRADOR") {
+    /*TODAS LAS FUNCIONES*/
     if (trabajador.ESTADO == "ACTIVO") {
       btns += `
       <button type="button" class="btn btn-primary Editar" data-toggle="modal" data-id="${trabajador.RUT}" data-target="#modalEditarTrabajador">
@@ -822,13 +810,10 @@ function configurarBtns(trabajador, ROL) {
         </button>`;
     }
   } else {
+    /*SOLO CREAR Y EDITAR*/
     if (trabajador.ESTADO == "ACTIVO") {
       btns += `<button type="button" class="btn btn-primary Editar" data-toggle="modal" data-id="${trabajador.RUT}" data-target="#modalEditarTrabajador">
         <i class="fa fa-edit"></i>
-      </button>
-    
-      <button type="button" class="btn btn-success Imprimir" data-toggle="modal" data-nombre="${trabajador.NOMBRE}" data-lugar="${trabajador.LUGAR}" data-id="${trabajador.RUT}"  data-target="#modalImprimir">
-        <i class="fa fa-print"></i>
       </button>`;
     }
   }

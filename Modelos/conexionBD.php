@@ -19,6 +19,7 @@ class conexionBD
         $dbname = "csa80265_sagrich_sistema";
         $user = 'csa80265_sagrich';
         $pass = 'NU!@,68Y5tkg';
+        // $host = '190.107.177.250';
         $host = 'localhost';
 
         try {

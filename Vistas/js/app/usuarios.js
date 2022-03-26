@@ -206,14 +206,8 @@ async function validarAcciones(texto) {
 const formCrear = document.querySelector("#formUsuarioCrear");
 formCrear.addEventListener("submit", async function (e) {
   e.preventDefault();
-
   const data = new FormData(formCrear);
   data.append("accion", "crearUsuario");
-
-  data.forEach((value, key) => {
-    console.log(`${key}: ${value}`);
-  });
-
   const respon = await fetch("Controladores/usuariosA.php", {
     method: "POST",
     body: data,

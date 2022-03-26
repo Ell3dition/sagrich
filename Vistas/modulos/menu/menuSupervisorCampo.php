@@ -29,11 +29,5 @@
         <p>Trabajadores</p>
       </a>
     </li>
-    <li class="nav-item">
-      <a href="usuarios" class="nav-link">
-        <i class="nav-icon fas fa-user"></i>
-        <p>Usuarios</p>
-      </a>
-    </li>
   </ul>
 </nav>

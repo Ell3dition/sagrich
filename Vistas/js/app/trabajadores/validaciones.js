@@ -83,4 +83,8 @@ const validarSteepCuatro = (datos) => {
   return contador == 0 ? true : false;
 };
 
+
+
+
+
 export { validarInputs, validarSteepDos, validarSteepCuatro };
