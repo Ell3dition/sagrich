@@ -15,7 +15,6 @@ class conexionBD
 
 
         //BASE DE DATOS PRODUCCION
-
         $dbname = "csa80265_sagrich_sistema";
         $user = 'csa80265_sagrich';
         $pass = 'NU!@,68Y5tkg';

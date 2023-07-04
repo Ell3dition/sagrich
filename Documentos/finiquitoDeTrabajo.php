@@ -49,8 +49,7 @@
       <span class="contratoTrabajador"></span>
       hasta el ____ de ____________________ de 202___, fecha en que se
       produjo el término a su contrato de trabajo por aplicación de la
-      causal Articulo 159 Nro.5 - conclusión del trabajo o servicio que dio
-      origen al contrato
+      causal _________________________________________________________
     </p>
     <p>
       <span>SEGUNDO :</span>
@@ -84,7 +83,7 @@
           <td>$</td>
         </tr>
         <tr>
-          <td>- Vacaciones (2,96)</td>
+          <td>- Vacaciones</td>
           <td>$</td>
         </tr>
       </tbody>

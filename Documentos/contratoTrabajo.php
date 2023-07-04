@@ -83,8 +83,8 @@
   <p>
     <span>TERCERO:</span> La remuneración del Trabajador estará constituida
     y se pagará de la siguiente forma: Sueldo base bruto diario, ascendente
-    a la cantidad de $ 11.667.- (once mil seiscientos sesenta y siete
-    pesos), que se pagará por día efectivamente trabajado. Esta remuneración
+    a la cantidad de $ _____________________________________________________,
+    que se pagará por día efectivamente trabajado. Esta remuneración
     se pagará en dinero en efectivo, cheque nominativo o transferencia
     bancaria. El Trabajador autoriza expresamente al Empleador para que se
     le descuente de sus remuneraciones el tiempo no trabajado debido a
