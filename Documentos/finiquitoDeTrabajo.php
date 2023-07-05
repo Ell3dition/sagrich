@@ -30,9 +30,8 @@
   <section style="margin-top: 30px">
     <p>
       En SAN CLEMENTE, a ______ de ____________________ de 202____, entre
-      SAGRICH SPA, RUT N°77.192.571-5, representada por don/ña CHRISTIAN
-      RODRIGO CHIRINO GONZALEZ, cédula nacional de identidad Nº16455003-6
-      domiciliado en MARIPOSAS PC 74 LT 3 -A en adelante, "el empleador"; y
+      <span class="nombreEmpresa"></span>, RUT N°<span class="rutEmpresa"></span>, representada por don/ña <span class="representanteEmpresa"></span> , cédula nacional de identidad Nº16455003-6
+      domiciliado en <span class="direccionEmpresa"></span> en adelante, "el empleador"; y
       don/ña <span class="nombreTrabajador"></span>, de nacionalidad
       Chilena, cédula nacional de identidad Nº<span class="rutTrabajador"></span>, domiciliado en <span class="domicilioTrabajador"></span>, en adelante también denominada el “Trabajador”, en adelante el “Ex –
       trabajador”, se deja constancia de la siguiente declaración,

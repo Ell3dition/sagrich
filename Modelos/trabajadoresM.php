@@ -173,4 +173,19 @@ class TrabajadoresM extends ConexionBD
     }
 
 
+    static function obtenerEmpresasM(){
+        try {
+
+            $sql= 'SELECT * FROM EMPRESA';
+            $pdo = conexionBD::cBD()->prepare($sql);
+            $pdo->execute();    
+            $empresas = $pdo->fetchAll(PDO::FETCH_ASSOC);
+            $pdo = null;
+     
+            return array("ESTADO" => true, "MOTIVO" => $empresas);
+        } catch (PDOException $e) {
+            return array("ESTADO" => false, "MOTIVO" => "Hubo un error al traer los datos de empresa si el error persiste contacte al administrador");
+        }
+    }
+
 }

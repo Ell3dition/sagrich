@@ -23,7 +23,37 @@ document.addEventListener("DOMContentLoaded", async function (e) {
   crearSmartWizard("smartEditar");
   const trabajadores = await cargarTrabajadores();
   renderizarTabla(trabajadores);
+  
+  cargarEmpresas()
 });
+
+const cargarEmpresas =async ()=>{
+  
+  const url = 'Controladores/trabajadoresC.php'
+  const response = await fetch(url,{
+    method:'POST',
+    body:new URLSearchParams({accion:'obtenerEmpresas'})
+  })
+  const {ESTADO, MOTIVO} = await response.json()
+
+  if(!ESTADO){
+    Swal.fire({
+      title:"Error",
+      text: MOTIVO,
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+    });
+    return;
+  }
+
+  localStorage.setItem('empresas', JSON.stringify(MOTIVO))
+ 
+}
+
+
 document.addEventListener("click", function (e) {
   if (
     e.target.className == "btn btn-danger Eliminar" ||
@@ -691,13 +721,50 @@ function setearModalImprimir(elemento) {
 }
 
 btnImprimirDocumentos.addEventListener("click", async function (e) {
+
+  await Swal.fire({
+    title: "Seleccione empresa",
+    html:  `<select id="selectEmpresas" class="form-control">${construirOptionsSelectsEmpresa()}</select>`,
+    showCancelButton: true,
+    confirmButtonText: "Continuar",
+  });
+
+  const empresaSeleccionada = document.getElementById("selectEmpresas").value;
+  if(empresaSeleccionada.toString() === '0'){
+    Swal.fire({
+      title: "Error",
+      text: "Debe seleccionar una empresa para generar los documentos",
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+    });
+    return
+  }
+
+  handlePrintDocuments(empresaSeleccionada)
+
+});
+
+const construirOptionsSelectsEmpresa = ()=>{
+  const listaEmpresas = JSON.parse(localStorage.getItem('empresas')) || []
+  const options = listaEmpresas.map((empresa)=>{
+    return `<option value="${empresa.RUT}">${empresa.NOMBRE}</option>`
+  })
+  options.unshift(`<option value="0">Seleccione una empresa</option>`)
+  return options.toString()
+}
+
+
+
+const handlePrintDocuments = async (empresaSeleccionada)=>{
+
   try {
     animacionBtn(btnImprimirDocumentos, "Configurando documentos...");
 
     let documentos = [];
-    console.log("antes del primer response dentro del forEach");
-    console.log(tablaDocumentosAImprimir.children[1].children);
-
+   
     //RECORRER TABLA con jquery
 
     $("#tablaDocumentosAImprimir tr").each(function (tindex, tr) {
@@ -707,8 +774,6 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
         }
       }
     });
-
-    console.log(documentos);
 
     if (documentos.length == 0) {
       Swal.fire({
@@ -762,8 +827,7 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
     trabajador["NACIMIENTO"] = formatoFecha(trabajador.NACIMIENTO);
     trabajador["LUGAR"] = `${trabajador.LUGAR}, ${trabajador.COMUNA}`;
     localStorage.setItem("trabajador", JSON.stringify(trabajador));
-
-    // window.open("Documentos/", "_blank");
+    localStorage.setItem("empresaSeleccionada",empresaSeleccionada)
 
     const data = new FormData();
     data.append("accion", "imprimir");
@@ -816,7 +880,7 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
       confirmButtonText: "Aceptar",
     });
   }
-});
+}
 
 function configurarBtns(trabajador, ROL) {
   let btns = "";

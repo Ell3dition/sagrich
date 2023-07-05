@@ -2,7 +2,7 @@
    <table id="tablaEncabezadoDeclaracionCovid">
      <tbody>
        <tr>
-         <td>SAGRICH SPA</td>
+         <td><span class="nombreEmpresa"></span></td>
          <td>DECLARACIÓN SIMPLE ESTADO DE SALUD COVID-19</td>
          <td>Prevención de Riesgos</td>
        </tr>

@@ -73,7 +73,43 @@ if (isset($_SESSION["Ingreso"]) && $_SESSION["Ingreso"]  == TRUE) {
     const nombreFaenaTrabajador = document.querySelectorAll(".nombreFaenaTrabajador");
 
     const trabajador = JSON.parse(localStorage.getItem("trabajador"));
-    console.log(trabajador);
+    const empresaSeleccionada = localStorage.getItem("empresaSeleccionada")
+    const listEmpresa = JSON.parse(localStorage.getItem("empresas")) || []
+    const empresa = listEmpresa.find((item)=> item.RUT === empresaSeleccionada)
+
+    // SETEAR DATOS EMPRESA
+
+    const direccionEmpresa = document.querySelectorAll(".direccionEmpresa")
+    const emailEmpresa = document.querySelectorAll(".emailEmpresa")
+    const nombreEmpresa = document.querySelectorAll(".nombreEmpresa")
+    const representanteEmpresa = document.querySelectorAll(".representanteEmpresa")
+    const rutEmpresa = document.querySelectorAll(".rutEmpresa")
+    const rutRepresentanteEmpresa = document.querySelectorAll(".rutRepresentanteEmpresa")
+
+
+    direccionEmpresa.forEach((element) => {
+      element.innerText = empresa.DIRECCION;
+    });
+
+    emailEmpresa.forEach((element) => {
+      element.innerText = empresa.EMAIL;
+    });
+
+    nombreEmpresa.forEach((element) => {
+      element.innerText = empresa.NOMBRE;
+    });
+
+    representanteEmpresa.forEach((element) => {
+      element.innerText = empresa.REPRESENTANTE;
+    });
+
+    rutEmpresa.forEach((element) => {
+      element.innerText = empresa.RUT;
+    });
+
+    rutRepresentanteEmpresa.forEach((element) => {
+      element.innerText = empresa.RUT_REPRESENTANTE;
+    });
 
     //SETEAR VALORES
 
@@ -137,9 +173,6 @@ if (isset($_SESSION["Ingreso"]) && $_SESSION["Ingreso"]  == TRUE) {
     nombreFaenaTrabajador.forEach((element) => {
       element.innerText = trabajador.NOMBRE_FAENA;
     });
-
-    
-    //GENERAR PDF CON DOMPDF
 
     
 
