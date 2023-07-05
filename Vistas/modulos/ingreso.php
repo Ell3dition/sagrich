@@ -22,7 +22,7 @@
         </div>
     <div class="col-md-12 mt-3">
         <div class="text-ligth text-md-left text-center">
-            <p>Desarrollado por <a href="https://www.sertimac.cl" target="_blank">SERTIMAC</a> V.1.2.0.</p>
+            <p>Desarrollado por <a href="https://www.linkedin.com/in/marcosjaraherrera/" target="_blank">Marcos Jara - software engineer</a> V.2.0.0.</p>
         </div>
     </div>
 </div>
