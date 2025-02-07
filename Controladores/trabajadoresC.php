@@ -125,14 +125,16 @@ class TrabajadoresC
     }
 
 
-    function imprimirC(){
-    
+    function imprimirC(){ 
         $documento = json_decode($_POST["documentos"], true);
         $_SESSION["documentos"] = $documento;
-
         echo json_encode(array("ESTADO" => true));
+    }
 
 
+    function obtenerEmpresasC(){
+        $respuesta = TrabajadoresM::obtenerEmpresasM();
+        echo json_encode($respuesta);
     }
 
 }
@@ -165,4 +167,7 @@ if ($_POST['accion'] == 'guardar') {
 
     $trabajador = new TrabajadoresC();
     $trabajador->imprimirC();
+}else if($_POST['accion'] == 'obtenerEmpresas') {
+    $trabajador = new TrabajadoresC();
+    $trabajador->obtenerEmpresasC();
 }

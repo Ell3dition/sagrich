@@ -10,7 +10,7 @@ class TrabajadoresM extends ConexionBD
     static function guardarTrabajadorM($trabajador)
     {
 
-        $query = "INSERT INTO TRABAJADORES VALUES (:RUT, :DV, :NOMBRE_UNO, :NOMBRE_DOS, :APELLIDO_UNO, :APELLIDO_DOS, :FECHA_NACIMIENTO, :CIVIL, :DIRECCION, :EMAIL, :TELEFONO,  :AFP, :SALUD, :CARGO, :LUGAR, :COMUNA , :NOMBRE_FAENA ,:FECHA_INGRESO, :HORARIO, 'ACTIVO')";
+        $query = "INSERT INTO TRABAJADORES VALUES (:RUT, :DV, UPPER(:NOMBRE_UNO), UPPER(:NOMBRE_DOS), UPPER(:APELLIDO_UNO), UPPER(:APELLIDO_DOS), :FECHA_NACIMIENTO, :CIVIL, :DIRECCION, :EMAIL, :TELEFONO,  UPPER(:AFP), UPPER(:SALUD), UPPER(:CARGO), UPPER(:LUGAR), UPPER(:COMUNA) , UPPER(:NOMBRE_FAENA) ,:FECHA_INGRESO, UPPER(:HORARIO), 'ACTIVO')";
 
         $pdo = conexionBD::cBD()->prepare($query);
 
@@ -122,21 +122,21 @@ class TrabajadoresM extends ConexionBD
         $query = "UPDATE TRABAJADORES SET
         RUT_TRABAJADOR = :RUT,
         DV_TRABAJADOR = :DV,
-        PRIMER_NOMBRE = :NOMBRE_UNO,
-        SEGUNDO_NOMBRE = :NOMBRE_DOS,
-        APELLIDO_PATERNO = :APELLIDO_UNO,
-        APELLIDO_MATERNO = :APELLIDO_DOS,
+        PRIMER_NOMBRE = UPPER(:NOMBRE_UNO),
+        SEGUNDO_NOMBRE = UPPER(:NOMBRE_DOS),
+        APELLIDO_PATERNO = UPPER(:APELLIDO_UNO),
+        APELLIDO_MATERNO = UPPER(:APELLIDO_DOS),
         FECHA_NACIMIENTO = :FECHA_NACIMIENTO,
         ESTADO_CIVIL = :CIVIL,
         DIRECCION = :DIRECCION,
         MAIL = :EMAIL,
         TELEFONO = :TELEFONO,
-        AFP = :AFP,
-        SALUD = :SALUD,
-        CARGO = :CARGO,
-        LUGAR_FUNCIONES = :LUGAR,
-        COMUNA_FAENA = :COMUNA,
-        NOMBRE_FAENA = :NOMBRE_FAENA,
+        AFP = UPPER(:AFP),
+        SALUD = UPPER(:SALUD),
+        CARGO = UPPER(:CARGO),
+        LUGAR_FUNCIONES = UPPER(:LUGAR),
+        COMUNA_FAENA = UPPER(:COMUNA),
+        NOMBRE_FAENA = UPPER(:NOMBRE_FAENA),
         FECHA_CONTRATO = :CONTRATO,
         HORARIO = :HORARIO
         WHERE RUT_TRABAJADOR = :id";
@@ -172,5 +172,20 @@ class TrabajadoresM extends ConexionBD
 
     }
 
+
+    static function obtenerEmpresasM(){
+        try {
+
+            $sql= 'SELECT * FROM EMPRESA';
+            $pdo = conexionBD::cBD()->prepare($sql);
+            $pdo->execute();    
+            $empresas = $pdo->fetchAll(PDO::FETCH_ASSOC);
+            $pdo = null;
+     
+            return array("ESTADO" => true, "MOTIVO" => $empresas);
+        } catch (PDOException $e) {
+            return array("ESTADO" => false, "MOTIVO" => "Hubo un error al traer los datos de empresa si el error persiste contacte al administrador");
+        }
+    }
 
 }

@@ -7,7 +7,7 @@
       Yo, <span class="nombreTrabajador"></span> C.I.
       <span class="rutTrabajador"></span>, declaro haber recibido en forma gratuita una
       copia del Reglamento Interno de Orden, Higiene y Seguridad de la EMPRESA
-      SAGRICH SPA.. de acuerdo a lo establecido en el artículo 156 inciso 2 del
+      <span class="nombreEmpresa"></span>.. de acuerdo a lo establecido en el artículo 156 inciso 2 del
       Código del Trabajo, artículo 14 del Decreto Supremo No 40 de 1969 del
       Ministerio del Trabajo y Previsión Social, publicado en el Diario Oficial
       del 07 de marzo de 1969 como Reglamento de la Ley 16.744 de 1968.

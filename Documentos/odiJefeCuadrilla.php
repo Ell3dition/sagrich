@@ -19,8 +19,7 @@
 
   <section style="margin-top: 30px">
     <p>
-      Empresa SAGRICH SPA . RUT: 77.192.571-5 representada por el Sr. Christian
-      Chirino González a través de esta actividad de capacitación, dará
+      Empresa <span class="nombreEmpresa"></span> . RUT: <span class="rutEmpresa"></span> representada por el Sr. <span class="representanteEmpresa"></span> a través de esta actividad de capacitación, dará
       cumplimiento con lo establecido en el D.S. No 40, que aprueba reglamento
       sobre prevención de los riesgos profesionales en su Titulo VI, Art. 21,
       referido a “de las obligaciones de informar de los riesgos laborales”,

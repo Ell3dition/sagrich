@@ -23,7 +23,7 @@
         <div class="container">
           <div class="row">
             <div class="col-md-12 d-flex justify-content-md-center">
-              <button data-toggle="modal" data-target="#modalCrearTrabajador" class="btn btn-success">Crear Trabajador</button>
+              <button data-toggle="modal" data-target="#modalCrearTrabajador" id="btnCrearTrabajador" class="btn btn-success">Crear Trabajador</button>
             </div>
 
             <div class="col-md-12 mt-4">

@@ -3,7 +3,7 @@
     <table id="tablaEncabezadoInduccion">
       <tbody>
         <tr>
-          <td>SAGRICH SPA</td>
+          <td><span class="nombreEmpresa"></span></td>
           <td>REGISTRO INDIVIDUAL DE CHARLA DE INDUCCIÓN A TRABAJADOR NUEVO</td>
           <td>Prevención de Riesgos</td>
         </tr>

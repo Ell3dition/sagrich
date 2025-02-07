@@ -3,10 +3,10 @@
 
   <p>
     En <span class="comunaFaena"></span> a <span class="contratoTrabajador"></span> entre
-    <span>Rodrigo Chirino González, C.I.16.455.003-6</span> en
-    representación de <span> SAGRICH SpA, RUT: 77.192.571-5</span>, ambos
-    domiciliados en Mariposas PC 74 LT 3 -A, comuna de San Clemente, email:
-    sagrichspa@gmail.com, en adelante “El Empleador” y
+    <span><span class="representanteEmpresa"></span>, C.I.<span class="rutRepresentanteEmpresa"></span></span> en
+    representación de <span> <span class="nombreEmpresa"></span>, RUT: <span class="rutEmpresa"></span></span>, ambos
+    domiciliados en <span class="direccionEmpresa"></span>, comuna de San Clemente, email:
+    <span class="emailEmpresa"></span>, en adelante “El Empleador” y
   </p>
   <table id="tablaDatosContrato" border="1px">
     <tbody>
@@ -83,8 +83,8 @@
   <p>
     <span>TERCERO:</span> La remuneración del Trabajador estará constituida
     y se pagará de la siguiente forma: Sueldo base bruto diario, ascendente
-    a la cantidad de $ 11.667.- (once mil seiscientos sesenta y siete
-    pesos), que se pagará por día efectivamente trabajado. Esta remuneración
+    a la cantidad de $ _____________________________________________________,
+    que se pagará por día efectivamente trabajado. Esta remuneración
     se pagará en dinero en efectivo, cheque nominativo o transferencia
     bancaria. El Trabajador autoriza expresamente al Empleador para que se
     le descuente de sus remuneraciones el tiempo no trabajado debido a

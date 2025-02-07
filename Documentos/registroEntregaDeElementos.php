@@ -3,7 +3,7 @@
     <tbody>
       <tr>
         <td rowspan="5" style="width: 70%; font-weight: bold">
-          REGISTRO ENTREGA DE ELEMENTOS DE PROTECCION PERSONAL SAGRICH SPA
+          REGISTRO ENTREGA DE ELEMENTOS DE PROTECCION PERSONAL <span class="nombreEmpresa"></span>
         </td>
       </tr>
       <tr>

@@ -20,19 +20,6 @@
                             <th scope="col">Imprimir</th>
                         </tr>
 
-                        <!-- comprobanteReglamentoInterno
-                                contratoTrabajo
-                                declaracionSimpleCovid
-                                finiquitoDeTrabajo
-                                odiControlCalidad
-                                odiJefeCuadrilla
-                                odiJunior
-                                odiObreroAgricola
-                                odiPlanillera
-                                odiSupervisor
-                                registroEntregaDeElementos
-                                registroIndividualInduccion
-                            cartaTerminoDeContrato -->
                     <tbody>
                         <tr>
                             <th scope="row">1</th>

@@ -13,13 +13,47 @@ import {
 } from "./trabajadores/validaciones.js";
 
 import "../helpers/validaRut.js";
+import { initGuardarTrabajadoresOffline } from "./trabajadores/offLine.js";
 document.addEventListener("DOMContentLoaded", async function (e) {
-  console.log("%c¡ADVERTENCIA!, esta es una herramienta para desarrolladores", "color: #ff0000; font-size: 20px;");
+  console.log(
+    "%c¡ADVERTENCIA!, esta es una herramienta para desarrolladores",
+    "color: #ff0000; font-size: 20px;"
+  );
   crearSmartWizard("smartCrear");
   crearSmartWizard("smartEditar");
   const trabajadores = await cargarTrabajadores();
   renderizarTabla(trabajadores);
+  
+  cargarEmpresas()
 });
+
+const cargarEmpresas =async ()=>{
+  
+  const url = 'Controladores/trabajadoresC.php'
+  const response = await fetch(url,{
+    method:'POST',
+    body:new URLSearchParams({accion:'obtenerEmpresas'})
+  })
+  const {ESTADO, MOTIVO} = await response.json()
+
+  if(!ESTADO){
+    Swal.fire({
+      title:"Error",
+      text: MOTIVO,
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+    });
+    return;
+  }
+
+  localStorage.setItem('empresas', JSON.stringify(MOTIVO))
+ 
+}
+
+
 document.addEventListener("click", function (e) {
   if (
     e.target.className == "btn btn-danger Eliminar" ||
@@ -72,11 +106,22 @@ const btnImprimirDocumentos = document.getElementById("btnImprimirDocumentos");
 const tablaDocumentosAImprimir = document.getElementById(
   "tablaDocumentosAImprimir"
 );
+const btnCrearTrabajador = document.getElementById("btnCrearTrabajador");
 
 const checkTodos = document.getElementById("checkTodos");
 
 checkTodos.addEventListener("change", async function (e) {
   renderizarTabla(await cargarTrabajadores());
+});
+
+btnCrearTrabajador.addEventListener("click", async function (e) {
+  console.log("click");
+  //saber si el navegador esta coneectado a internet
+  if (navigator.onLine) {
+  } else {
+    initGuardarTrabajadoresOffline();
+    return;
+  }
 });
 
 const url = "Controladores/trabajadoresC.php";
@@ -130,7 +175,7 @@ async function cambiarEstadoTrabajador(elemento, estado) {
     id = elemento.dataset.id;
   }
 
-  if(estado != "ACTIVAR"){
+  if (estado != "ACTIVAR") {
     const { isConfirmed } = await Swal.fire({
       title: "¿Estás seguro?",
       text: "¡No podrás revertir esto!",
@@ -140,13 +185,10 @@ async function cambiarEstadoTrabajador(elemento, estado) {
       confirmButtonColor: "#d33",
       confirmButtonText: "¡Sí, eliminar!",
     });
-  
-    if (!isConfirmed) return;
-  
 
+    if (!isConfirmed) return;
   }
 
-  
   const response = await fetch(url, {
     method: "POST",
     body: new URLSearchParams({ accion: "cambiarEstado", id, estado }),
@@ -243,12 +285,7 @@ $(smartCrear).on(
           e.preventDefault();
         }
       } else if (currentStepIndex === 3) {
-        const datos = [
-          lugarFuncionesN,
-          cargoN,
-          nombreFaenaN,
-          horarioN,
-        ];
+        const datos = [lugarFuncionesN, cargoN, nombreFaenaN, horarioN];
         const result = validarSteepCuatro(datos);
         if (!result) {
           Swal.fire({
@@ -493,12 +530,7 @@ $(smartEditar).on(
           e.preventDefault();
         }
       } else if (currentStepIndex === 3) {
-        const datos = [
-          lugarFuncionesEd,
-          cargoEd,
-          nombreFaenaEd,
-          horarioEd,
-        ];
+        const datos = [lugarFuncionesEd, cargoEd, nombreFaenaEd, horarioEd];
         const result = validarSteepCuatro(datos);
         if (!result) {
           Swal.fire({
@@ -605,7 +637,6 @@ finishBtnEd.addEventListener("click", async function (e) {
     horario: horarioEd.value,
   };
 
-  
   const data = new FormData();
   data.append("datos", JSON.stringify(datos));
   data.append("accion", "actualizar");
@@ -690,14 +721,57 @@ function setearModalImprimir(elemento) {
 }
 
 btnImprimirDocumentos.addEventListener("click", async function (e) {
+
+  await Swal.fire({
+    title: "Seleccione empresa",
+    html:  `<select id="selectEmpresas" class="form-control">${construirOptionsSelectsEmpresa()}</select>`,
+    showCancelButton: true,
+    confirmButtonText: "Continuar",
+  });
+
+  const empresaSeleccionada = document.getElementById("selectEmpresas").value;
+  if(empresaSeleccionada.toString() === '0'){
+    Swal.fire({
+      title: "Error",
+      text: "Debe seleccionar una empresa para generar los documentos",
+      icon: "error",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Aceptar",
+    });
+    return
+  }
+
+  handlePrintDocuments(empresaSeleccionada)
+
+});
+
+const construirOptionsSelectsEmpresa = ()=>{
+  const listaEmpresas = JSON.parse(localStorage.getItem('empresas')) || []
+  const options = listaEmpresas.map((empresa)=>{
+    return `<option value="${empresa.RUT}">${empresa.NOMBRE}</option>`
+  })
+  options.unshift(`<option value="0">Seleccione una empresa</option>`)
+  return options.toString()
+}
+
+
+
+const handlePrintDocuments = async (empresaSeleccionada)=>{
+
   try {
     animacionBtn(btnImprimirDocumentos, "Configurando documentos...");
 
     let documentos = [];
-    tablaDocumentosAImprimir.children[1].children.forEach((elemento) => {
-      const check = elemento.children[2].children[0];
-      if (check.checked) {
-        documentos.push(check.getAttribute("id"));
+   
+    //RECORRER TABLA con jquery
+
+    $("#tablaDocumentosAImprimir tr").each(function (tindex, tr) {
+      if (tr.children[2].tagName == "TD") {
+        if (tr.children[2].children[0].checked) {
+          documentos.push(tr.children[2].children[0].getAttribute("id"));
+        }
       }
     });
 
@@ -723,18 +797,37 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
     });
     const trabajador = await response.json();
 
-    //tbody
+    if (trabajador.CONTRATO == "") {
+      await Swal.fire({
+        title: "Ingrese fecha de contrato",
+        html: '<input class="swal2-input" type="date" id="fechaContratoRespaldo">',
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
+      });
+      const fecha = document.getElementById("fechaContratoRespaldo").value;
 
+      if (fecha == "") {
+        removerAnimacionBtn(btnImprimirDocumentos, "Imprimir");
+        Swal.fire({
+          title: "Error",
+          text: "Debe ingresar una fecha de contrato",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        });
+        return;
+      }
+      trabajador["CONTRATO"] = formatoFecha(fecha);
+    } else {
+      trabajador["CONTRATO"] = formatoFecha(trabajador.CONTRATO);
+    }
     trabajador["RUT"] = $.formatRut(`${trabajador.RUT}-${trabajador.DV}`);
-    trabajador["CONTRATO"] = formatoFecha(trabajador.CONTRATO);
     trabajador["NACIMIENTO"] = formatoFecha(trabajador.NACIMIENTO);
     trabajador["LUGAR"] = `${trabajador.LUGAR}, ${trabajador.COMUNA}`;
-
-  
-
     localStorage.setItem("trabajador", JSON.stringify(trabajador));
-
-    // window.open("Documentos/", "_blank");
+    localStorage.setItem("empresaSeleccionada",empresaSeleccionada)
 
     const data = new FormData();
     data.append("accion", "imprimir");
@@ -747,6 +840,7 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
     });
 
     const respuesta = await responseImp.json();
+    console.log(respuesta);
     removerAnimacionBtn(btnImprimirDocumentos, "Imprimir");
     if (respuesta.ESTADO) {
       window.open("Documentos/generarImpresion.php", "_blank");
@@ -774,10 +868,11 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
       });
     }
   } catch (error) {
+    console.log(error);
     removerAnimacionBtn(btnImprimirDocumentos, "Imprimir");
     Swal.fire({
       title: "Error",
-      text: "No se pudo configurar el documento para imprimir, si el error persiste contácte al administrador",
+      text: "No se pudo configurar el documento para imprimir, si el error persiste contácte al administrador TRYCATHC",
       icon: "error",
       showCancelButton: false,
       confirmButtonColor: "#3085d6",
@@ -785,7 +880,7 @@ btnImprimirDocumentos.addEventListener("click", async function (e) {
       confirmButtonText: "Aceptar",
     });
   }
-});
+}
 
 function configurarBtns(trabajador, ROL) {
   let btns = "";

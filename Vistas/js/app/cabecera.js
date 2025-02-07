@@ -119,6 +119,7 @@ salir.addEventListener("click", async function () {
   });
 console.log(response);
   if (response.isConfirmed) {
+    localStorage.clear();
     window.location = "salir";
   }
 });

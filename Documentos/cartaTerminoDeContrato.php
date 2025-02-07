@@ -1,5 +1,5 @@
   <section>
-    <header id="fechaEncabezado"><p>San Clemente, ______________________</p></header>
+    <header id="fechaEncabezado"><p>______________________</p></header>
     <div id="encabezadoCarta">
       Señor:<br />
 
@@ -28,9 +28,9 @@
 
     <section>
       <p>
-        <span>Christian Rodrigo Chirino González, C.I.16.455.003-6,</span> en
-        representación de <span>SAGRICH SpA, RUT: 77.192.571-5, </span> ambos
-        con domiciolio en Mariposas PC 74 LT 3 -A, comuna de San Clemente, dando
+        <span><span class="representanteEmpresa"></span> , C.I.<span class="rutRepresentanteEmpresa"></span>,</span> en
+        representación de <span><span class="nombreEmpresa"></span>, RUT: <span class="rutEmpresa"></span>, </span> ambos
+        con domiciolio en <span class="direccionEmpresa"></span>, dando
         cumplimiento a la ley, comunico a usted el término de su contrato de
         trabajo con fecha ________________________________________, de acuerdo
         con el Art. 159 Nº 5 - "conclusión del trabajo o servicio que dio origen
@@ -69,8 +69,8 @@
 
       <p>Desde se agradece la colaboracón prestada</p>
       <p>Atentamente</p>
-      <p><span>Christian Rodrigo Chirino González</span></p>
-      <p><span>SAGRICH SpA</span></p>
+      <p><span class="representanteEmpresa"></span></p>
+      <p><span class="nombreEmpresa"></span></p>
     </section>
 
     <section style="display: flex; justify-content: right; margin-top: 20px;">
