@@ -39,19 +39,20 @@ if (isset($_SESSION["Ingreso"]) && $_SESSION["Ingreso"]  == TRUE) {
 
 <body>
  
-  <?php
+<?php
+
+  $totalDocumentos = count($documentos);
+  $contador = 0;
 
   foreach ($documentos as $documento) {
-    include_once './' . $documento . '.php';
-    echo '<div class=SaltoDePagina> </div>';
+      include_once './' . $documento . '.php';    
+      $contador++;
+      if ($contador < $totalDocumentos) {
+          echo '<div class="SaltoDePagina"></div>';
+      }
   }
 
-
-
-
-
-  ?>
-
+?>
 
 
   <script>

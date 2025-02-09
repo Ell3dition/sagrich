@@ -143,9 +143,12 @@
     Empleador y uno en poder del Trabajador.
   </p>
 
-  <p class="firmas">
+  <div class="firmas" >
     <span>FIRMA DEL TRABAJADOR</span>
 
+   <div class="firma-empleador">
+    <img src="../Documentos/firma.png" alt="firma-empleador">
     <span>FIRMA DEL EMPLEADOR</span>
-  </p>
+   </div>
+  </div>
 </section>
